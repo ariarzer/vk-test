@@ -1,15 +1,40 @@
-
 {
   "name": "vk-test-task",
   "version": "0.1.0",
   "description": "Test task for VK",
   "main": "index.js",
   "scripts": {
-    "test": "exit 0",
+    "test": "jest && npm run lint",
+    "lint": "eslint \"**/*.js\"",
     "start": "node index.js"
   },
   "author": {
     "name": "Sofi Valitova",
     "email": "ariarzer@gmail.com"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.5",
+    "@babel/preset-env": "^7.1.5",
+    "babel": "^6.23.0",
+    "babel-jest": "^23.6.0",
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "jest": "^23.5.0"
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "env": {
+      "browser": true,
+      "node": true,
+      "jest": true
+    },
+    "rules": {
+      "import/extensions": "never",
+      "jsx-a11y/label-has-for": false,
+      "jsx-a11y/label-has-associated-control": false
+    }
   }
 }
