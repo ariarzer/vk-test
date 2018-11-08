@@ -1,0 +1,15 @@
+
+{
+  "name": "vk-test-task",
+  "version": "0.1.0",
+  "description": "Test task for VK",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit 0",
+    "start": "node index.js"
+  },
+  "author": {
+    "name": "Sofi Valitova",
+    "email": "ariarzer@gmail.com"
+  }
+}
