@@ -1,9 +1,6 @@
-const http = require('http');
+const express = require('express');
+const app = express();
 
-const server = new http.Server();
+app.get('/', express.static('static'));
 
-server.on('request', (req, res) => {
-  res.end('Hello World!');
-});
-
-server.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080);
