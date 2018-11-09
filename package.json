@@ -12,6 +12,10 @@
     "name": "Sofi Valitova",
     "email": "ariarzer@gmail.com"
   },
+  "dependencies": {
+    "dummy-json": "^2.0.0",
+    "express": "^4.16.4"
+  },
   "devDependencies": {
     "@babel/core": "^7.1.5",
     "@babel/preset-env": "^7.1.5",
