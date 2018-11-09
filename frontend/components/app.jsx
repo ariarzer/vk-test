@@ -7,9 +7,9 @@ class App extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange() {
-    fetch('/search', { cache: 'no-cache' })
-      .then(result => result.json())
+  onChange(e) {
+    fetch(`/search?value=${e.target.value}`, { cache: 'no-cache' })
+      .then(result => result.text())
       .then(value => console.log(value));
   }
 

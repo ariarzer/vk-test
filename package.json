@@ -48,5 +48,8 @@
       "jsx-a11y/label-has-for": false,
       "jsx-a11y/label-has-associated-control": false
     }
-  }
+  },
+  "eslintIgnore": [
+    "static/bundle.js"
+  ]
 }
