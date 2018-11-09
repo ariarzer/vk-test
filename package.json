@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest && npm run lint",
-    "lint": "eslint \"**/*.js\"",
+    "lint": "eslint \"**/*.{js, jsx}\"",
     "build": "webpack",
-    "start": "npm run build && node index.js "
+    "start": "node index.js",
+    "postinstall": "npm run build"
   },
   "author": {
     "name": "Sofi Valitova",
@@ -21,11 +22,11 @@
     "react-dom": "^16.5.2"
   },
   "devDependencies": {
-    "babel": "^6.23.0",
+    "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.5",
     "@babel/preset-env": "^7.1.5",
-    "@babel/cli": "^7.1.2",
     "@babel/preset-react": "^7.0.0",
+    "babel": "^6.23.0",
     "babel-loader": "^8.0.4",
     "eslint": "^5.7.0",
     "eslint-config-airbnb": "^17.1.0",
@@ -46,7 +47,11 @@
     "rules": {
       "import/extensions": "never",
       "jsx-a11y/label-has-for": false,
-      "jsx-a11y/label-has-associated-control": false
+      "jsx-a11y/label-has-associated-control": false,
+      "class-methods-use-this": 0
     }
-  }
+  },
+  "eslintIgnore": [
+    "static/dist/"
+  ]
 }
