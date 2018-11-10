@@ -17,7 +17,7 @@ class App extends React.Component {
     return (
       <div>
         <form>
-          <input id="search" autoComplete="off" onChange={this.onChange}/>
+          <input id="search" autoComplete="off" onChange={this.onChange} />
         </form>
       </div>
     );
