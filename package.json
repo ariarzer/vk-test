@@ -9,8 +9,9 @@
     "build": "webpack",
     "dev": "nodemon ./index.js localhost 8080",
     "dev-front": "webpack -w",
+    "data-gen": "mkdir data; node scripts/generate.js > data/users.json",
     "start": "node index.js",
-    "postinstall": "npm run build"
+    "postinstall": "npm run data-gen && npm run build"
   },
   "author": {
     "name": "Sofi Valitova",

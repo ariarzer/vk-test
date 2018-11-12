@@ -1,9 +1,11 @@
 import React from 'react';
 
 function List(props) {
+  const res = props.searchResult;
+
   return (
     <div>
-      <ul>{props.searchResult.map((item) => (<li>{item.personalName}  {item.familyName}</li>))}</ul>
+      <ul>{Object.keys(res).map((key) => (<li>{res[key].personalName}  {res[key].familyName}</li>))}</ul>
     </div>
   );
 }
