@@ -1,8 +1,12 @@
 import React from 'react';
 
+import List from './List.jsx';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {searchResult: []};
 
     this.onChange = this.onChange.bind(this);
   }
@@ -10,15 +14,18 @@ class App extends React.Component {
   onChange(e) {
     fetch(`/search?value=${e.target.value}`, { cache: 'no-cache' })
       .then(result => result.text())
-      .then(value => console.log(value));
+      .then(value => this.setState({searchResult: JSON.parse(value)}));
   }
 
   render() {
+    const { searchResult } = this.state;
+
     return (
       <div>
         <form>
-          <input id="search" autoComplete="off" onChange={this.onChange} />
+          <input autoComplete="off" onChange={this.onChange} />
         </form>
+        <List searchResult={searchResult}/>
       </div>
     );
   }
