@@ -7,6 +7,8 @@
     "test": "jest && npm run lint",
     "lint": "eslint \"**/*.{js, jsx}\"",
     "build": "webpack",
+    "dev": "nodemon ./index.js localhost 8080",
+    "dev-front": "webpack -w",
     "start": "node index.js",
     "postinstall": "npm run build"
   },
