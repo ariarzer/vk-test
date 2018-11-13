@@ -1,6 +1,4 @@
-function buildTree(wordList) {
-  const treeRoot = { data: '' };
-
+function buildTree(wordList, treeRoot = { data: '' }) {
   Object.keys(wordList).forEach((key) => {
     const letters = wordList[key].split('');
 
