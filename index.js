@@ -1,8 +1,8 @@
 const url = require('url');
 const express = require('express');
 
-const User = require('./utils/Users');
-const PrefixTree = require('./utils/PrefixTree');
+const User = require('./libs/Users');
+const PrefixTree = require('./libs/PrefixTree');
 
 const usersData = require('./data/users.json');
 
