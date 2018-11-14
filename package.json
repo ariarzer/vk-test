@@ -9,7 +9,7 @@
     "build": "webpack",
     "dev": "nodemon ./index.js localhost 8080",
     "dev-front": "webpack -w",
-    "data-gen": "mkdir data; node scripts/generate.js > data/users.json",
+    "data-gen": "./scripts/generate",
     "start": "node index.js",
     "postinstall": "npm run data-gen && npm run build"
   },
@@ -29,6 +29,7 @@
     "@babel/core": "^7.1.5",
     "@babel/preset-env": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
+    "@download/blockies": "^1.0.3",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "eslint": "^5.7.0",

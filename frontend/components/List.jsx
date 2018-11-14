@@ -1,13 +1,42 @@
 import React from 'react';
+import { createIcon } from '@download/blockies';
 
-function List(props) {
-  const res = props.searchResult;
+class List extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div>
-      <ul>{Object.keys(res).map((key) => (<li>{res[key].personalName}  {res[key].familyName}</li>))}</ul>
-    </div>
-  );
+    this.onError = this.onError.bind(this);
+  }
+
+  onError(e) {
+    const parent = e.target.parentNode;
+    parent.removeChild(e.target);
+
+    const icon = createIcon({
+      seed: parent.innerHTML,
+      size: 50/5,
+      scale: 5
+    });
+    parent.appendChild(icon);
+  }
+
+  render() {
+    const { searchResult: res } = this.props;
+
+    return (
+      <div>
+        <ul>{Object.keys(res).map((key) => (<li>
+          {res[key].personalName}
+          {res[key].familyName}
+          <img
+            src={res[key].avatar}
+            alt={`avatar ${res[key].personalName} ${res[key].familyName}`}
+            onError={this.onError}
+          />
+          </li>))}</ul>
+      </div>
+    );
+  }
 }
 
 export default List;
