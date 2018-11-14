@@ -23,7 +23,7 @@ class App extends React.Component {
     return (
       <div>
         <form>
-          <input autoComplete="off" onChange={this.onChange} />
+          <input autoComplete="off" onChange={this.onChange} autoFocus/>
         </form>
         <List searchResult={searchResult}/>
       </div>

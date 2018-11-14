@@ -7,7 +7,7 @@ const template = `
     "personalName": "{{firstName}}",
     "familyName": "{{lastName}}",
     "meta": "{{city}}, {{street}}",
-    "avatar": "img{{@index}}.png"
+    "avatar": "https://picsum.photos/50/50?image={{int 0 1084}}"
   },
   {{/repeat}}
 }`;
