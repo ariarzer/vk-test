@@ -23,4 +23,8 @@ app.get('/search', (req, res) => {
   res.send(tree.find(value, usersData));
 });
 
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080, (error) => {
+  if (error) {
+    console.error(error);
+  }
+});
