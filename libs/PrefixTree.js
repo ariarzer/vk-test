@@ -23,8 +23,27 @@ class prefixTree {
     this.tree = treeRoot;
   }
 
+  find(phrase, wordList) {
+    if (phrase.split(' ').length === 1) {
+      return this.findLocal(phrase, wordList);
+    }
 
-  find(word, wordList) {
+    const finds = phrase.split(' ').map(item => this.findLocal(item, wordList));
+
+    const result = {};
+
+    finds.forEach((item, index, all) => {
+      Object.keys(item).forEach((key) => {
+        if (all[index + 1] && all[index + 1][key]) {
+          result[key] = item[key];
+        }
+      });
+    });
+
+    return result;
+  }
+
+  findLocal(word, wordList) {
     const result = {};
 
     const letters = word.split('');

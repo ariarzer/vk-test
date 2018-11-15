@@ -1,6 +1,7 @@
 const users = require('../testData/users');
 const findM = require('../testData/find_M');
 const findOlivia = require('../testData/find_Olivia');
+const findOliviaMadlen = require('../testData/find_Olivia_Madlen');
 
 const Users = require('../../Users');
 const PrefixTree = require('../../PrefixTree.js');
@@ -16,4 +17,8 @@ test('for find M', () => {
 
 test('for find Olivia', () => {
   expect(tree.find('Olivia', users)).toEqual(findOlivia);
+});
+
+test('for find Olivia Madlen', () => {
+  expect(tree.find('Olivia Madlen', users)).toEqual(findOliviaMadlen);
 });
