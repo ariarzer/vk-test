@@ -6,7 +6,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {searchResult: []};
+    this.state = { searchResult: [] };
 
     this.onChange = this.onChange.bind(this);
   }
@@ -14,7 +14,7 @@ class App extends React.Component {
   onChange(e) {
     fetch(`/search?value=${e.target.value}`, { cache: 'no-cache' })
       .then(result => result.text())
-      .then(value => this.setState({searchResult: JSON.parse(value)}));
+      .then(value => this.setState({ searchResult: JSON.parse(value) }));
   }
 
   render() {
@@ -23,9 +23,9 @@ class App extends React.Component {
     return (
       <div>
         <form>
-          <input autoComplete="off" onChange={this.onChange} autoFocus/>
+          <input autoComplete="off" onChange={this.onChange} />
         </form>
-        <List searchResult={searchResult}/>
+        <List searchResult={searchResult} />
       </div>
     );
   }
