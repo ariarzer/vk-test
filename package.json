@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest && npm run lint",
-    "lint": "eslint \"**/*.{js, jsx}\"",
+    "lint": "eslint \"**/*.js{,x}\"",
     "build": "webpack",
     "dev": "nodemon ./index.js localhost 8080",
     "dev-front": "webpack -w",
@@ -22,16 +22,17 @@
     "express": "^4.16.4",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2"
+    "react-dom": "^16.5.2",
+    "@download/blockies": "^1.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.5",
     "@babel/preset-env": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
-    "@download/blockies": "^1.0.3",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
+    "babel-eslint": "^10.0.1",
     "eslint": "^5.7.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
@@ -57,7 +58,8 @@
       "jsx-a11y/label-has-for": false,
       "jsx-a11y/label-has-associated-control": false,
       "class-methods-use-this": 0
-    }
+    },
+    "parser": "babel-eslint"
   },
   "eslintIgnore": [
     "static/dist/"
