@@ -6,9 +6,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { searchResult: [] };
+    this.state = { searchResult: {}, selected: null };
 
     this.onChange = this.onChange.bind(this);
+    this.onSelected = this.onSelected.bind(this);
   }
 
   onChange(e) {
@@ -17,15 +18,36 @@ class App extends React.Component {
       .then(value => this.setState({ searchResult: JSON.parse(value) }));
   }
 
+  onSelected(id) {
+    const { searchResult, selected } = this.state;
+    if (!Object.is(selected, searchResult[id])) {
+      this.setState({ selected: searchResult[id] });
+    }
+  }
+
   render() {
-    const { searchResult } = this.state;
+    const { searchResult, selected } = this.state;
 
     return (
       <div>
-        <form>
-          <input autoComplete="off" onChange={this.onChange} />
-        </form>
-        <List searchResult={searchResult} />
+        {selected
+          ? (
+            <div>
+              {selected.personalName}
+              {' '}
+              {selected.familyName}
+            </div>
+          )
+          : (null)
+        }
+        <input
+          autoComplete="off"
+          onChange={this.onChange}
+        />
+        <List
+          searchResult={searchResult}
+          onSelected={this.onSelected}
+        />
       </div>
     );
   }
