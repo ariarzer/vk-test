@@ -13,9 +13,15 @@ class App extends React.Component {
   }
 
   onChange(e) {
-    fetch(`/search?value=${e.target.value}`, { cache: 'no-cache' })
-      .then(result => result.text())
-      .then(value => this.setState({ searchResult: JSON.parse(value) }));
+    const { value } = e.target;
+
+    if (value) {
+      fetch(`/search?value=${value}`, { cache: 'no-cache' })
+        .then(result => result.text())
+        .then(result => this.setState({ searchResult: JSON.parse(result) }));
+    } else {
+      this.setState({ searchResult: {} });
+    }
   }
 
   onSelected(id) {
