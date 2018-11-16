@@ -7,6 +7,7 @@ class List extends React.Component {
     super(props);
 
     this.onError = this.onError.bind(this);
+    this.onSelected = this.onSelected.bind(this);
   }
 
   onError(e) {
@@ -21,6 +22,11 @@ class List extends React.Component {
     parent.appendChild(icon);
   }
 
+  onSelected(e) {
+    const { onSelected } = this.props;
+    onSelected(e.target.id);
+  }
+
   render() {
     const { searchResult: res } = this.props;
 
@@ -28,7 +34,10 @@ class List extends React.Component {
       <div>
         <ul>
           {Object.keys(res).map(key => (
-            <li>
+            <li
+              onClick={this.onSelected}
+              id={key}
+            >
               {res[key].personalName}
               {res[key].familyName}
               <img
@@ -45,7 +54,8 @@ class List extends React.Component {
 }
 
 List.propTypes = {
-  searchResult: PropTypes.objectOf(PropTypes.object()).isRequired,
+  searchResult: PropTypes.objectOf(PropTypes.object).isRequired,
+  onSelected: PropTypes.func.isRequired,
 };
 
 export default List;
