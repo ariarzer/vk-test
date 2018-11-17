@@ -1,7 +1,10 @@
+const correctingLayout = require('./correctingLayout');
+const transliterate = require('./transliterate');
+
 class prefixTree {
   constructor(wordList, treeRoot = { data: '' }) {
     Object.keys(wordList).forEach((key) => {
-      const letters = wordList[key].split('');
+      const letters = wordList[key].toLowerCase().split('');
 
       let curNode = treeRoot;
 
@@ -23,9 +26,29 @@ class prefixTree {
     this.tree = treeRoot;
   }
 
-  find(phrase, wordList) {
+  find(praseCase, wordlist) {
+    const prase = praseCase.toLowerCase();
+    return {
+      ...this.findPhrase(prase, wordlist),
+      ...this.findPhrase(correctingLayout(prase), wordlist),
+      ...this.findPhrase(transliterate(prase), wordlist),
+      ...this.findPhrase(transliterate(prase, true), wordlist),
+      ...this.findPhrase(transliterate(correctingLayout(prase)), wordlist),
+      ...this.findPhrase(transliterate(correctingLayout(prase), true), wordlist),
+    };
+  }
+
+  findPhrase(phraseCase, wordList) {
+    const phrase = phraseCase.toLowerCase();
+
     if (phrase.split(' ').length === 1) {
-      return this.findLocal(phrase, wordList);
+      try {
+        return this.findLocal(phrase, wordList);
+      } catch (e) {
+        if (e.message === 'not found') {
+          return {};
+        }
+      }
     }
 
     const finds = phrase.split(' ').map(item => this.findLocal(item, wordList));
@@ -52,7 +75,7 @@ class prefixTree {
 
     letters.forEach((symbol, index, all) => {
       if (curNode[symbol] === undefined) {
-        return 'not found';
+        throw new Error('not found');
       }
 
       if (symbol === all[all.length - 1]) {
