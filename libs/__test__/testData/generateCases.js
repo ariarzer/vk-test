@@ -12,10 +12,10 @@ Object.keys(users).forEach((key) => {
   surnames[key] = users[key].familyName;
 });
 
-const tree2 = new Tree(names);
+const tree = new Tree(names);
 
-const tree = new Tree(surnames, tree2.tree);
+// const tree2 = new Tree(surnames, tree.tree);
 
-const find = tree.find('Olivia', users);
+// const find = tree.find('Olivia', users);
 
-console.log(JSON.stringify(find));
+console.log(JSON.stringify(tree));
