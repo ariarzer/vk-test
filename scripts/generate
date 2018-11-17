@@ -2,10 +2,5 @@
 
 rm -rf ./data
 
-rm -rf ./frontend/data
-
 mkdir ./data
 node scripts/generate.js > data/users.json;
-
-mkdir ./frontend/data
-node scripts/generate-front.js > ./frontend/data/users.json;

@@ -72,9 +72,15 @@
     "avatar": "img11.png"
   },
   "id869594869": {
-    "personalName": "Яровлак",
-    "familyName": "Фамилия",
-    "meta": "Папугайская респукблика",
+    "personalName": "Ярослав",
+    "familyName": "Фамилия" ,
+    "meta": "Папугайская республика",
+    "avatar": "img12.png"
+  },
+  "id869594574": {
+    "personalName": "Андрей",
+    "familyName": "Рогозов",
+    "meta": "Санкт-Петербург",
     "avatar": "img12.png"
   }
 }
