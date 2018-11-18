@@ -1,19 +1,29 @@
 import React from 'react';
 
 import List from './List.jsx';
+import Selected from './Select.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { searchResult: {}, selected: null };
+    this.state = {
+      searchResult: {},
+      selected: null,
+      inputValue: '',
+    };
 
     this.onChange = this.onChange.bind(this);
     this.onSelected = this.onSelected.bind(this);
+    this.onAddClick = this.onAddClick.bind(this);
+
+    this.textInput = React.createRef();
   }
 
   onChange(e) {
     const { value } = e.target;
+
+    this.setState({ inputValue: value });
 
     if (value) {
       fetch(`/search?value=${value}`, { cache: 'no-cache' })
@@ -31,24 +41,25 @@ class App extends React.Component {
     }
   }
 
+  onAddClick() {
+    this.setState({ inputValue: '' });
+    this.textInput.current.focus();
+  }
+
   render() {
-    const { searchResult, selected } = this.state;
+    const { searchResult, selected, inputValue } = this.state;
 
     return (
       <div>
-        {selected
-          ? (
-            <div>
-              {selected.personalName}
-              {' '}
-              {selected.familyName}
-            </div>
-          )
-          : (null)
-        }
+        <Selected
+          selected={selected}
+          onAddClick={this.onAddClick}
+        />
         <input
           autoComplete="off"
           onChange={this.onChange}
+          value={inputValue}
+          ref={this.textInput}
         />
         <List
           searchResult={searchResult}
