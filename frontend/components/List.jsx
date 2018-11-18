@@ -28,7 +28,7 @@ class List extends React.Component {
   }
 
   render() {
-    const { searchResult: res } = this.props;
+    const { searchResult: res, showAvatar: show } = this.props;
 
     return (
       <div>
@@ -40,11 +40,15 @@ class List extends React.Component {
             >
               {res[key].personalName}
               {res[key].familyName}
-              <img
-                src={res[key].avatar}
-                alt={`avatar ${res[key].personalName} ${res[key].familyName}`}
-                onError={this.onError}
-              />
+              {show
+                ? (
+                  <img
+                    src={res[key].avatar}
+                    alt={`avatar ${res[key].personalName} ${res[key].familyName}`}
+                    onError={this.onError}
+                  />)
+                : null
+              }
             </li>
           ))}
         </ul>
@@ -56,6 +60,7 @@ class List extends React.Component {
 List.propTypes = {
   searchResult: PropTypes.objectOf(PropTypes.object).isRequired,
   onSelected: PropTypes.func.isRequired,
+  showAvatar: PropTypes.bool.isRequired,
 };
 
 export default List;
