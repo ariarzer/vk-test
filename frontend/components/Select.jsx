@@ -1,39 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-class Select extends React.Component {
-  constructor(props) {
-    super(props);
+function Select(props) {
+  const { multiple, store: { select }, onClick } = props;
 
-    this.onClick = this.onClick.bind(this);
-  }
-
-  onClick() {
-    const { onAddClick } = this.props;
-    onAddClick();
-  }
-
-  render() {
-    const { selected } = this.props;
-
-    return selected
-      ? (
-        <div>
-          <div>
-            {selected.personalName}
-            {' '}
-            {selected.familyName}
-          </div>
-          <button type="button" onClick={this.onClick}>Add+</button>
-        </div>
-      )
-      : (null);
-  }
+  return (Object.keys(select).length
+    ? (
+      <div>
+        <ul>
+          {Object.keys(select).map(key => (
+            <li id={key} key={key}>
+              {select[key].personalName}
+              {select[key].familyName}
+            </li>
+          ))}
+        </ul>
+        {multiple
+          ? (<button type="button" onClick={onClick}>Add+</button>)
+          : null}
+      </div>
+    )
+    : (null)
+  );
 }
 
 Select.propTypes = {
-  selected: PropTypes.objectOf(PropTypes.object).isRequired,
-  onAddClick: PropTypes.func.isRequired,
+  store: PropTypes.objectOf(PropTypes.object).isRequired,
+  multiple: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
-export default Select;
+export default connect(store => ({ store }))(Select);
