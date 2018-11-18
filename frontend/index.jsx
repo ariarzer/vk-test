@@ -3,7 +3,12 @@ import ReactDOM from 'react-dom';
 
 import App from './components/App.jsx';
 
+const config = {
+  multiple: true,
+  showAvatars: false,
+};
+
 ReactDOM.render(
-  <App />,
+  <App config={config} />,
   document.getElementById('root'),
 );

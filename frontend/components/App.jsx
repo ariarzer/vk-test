@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import List from './List.jsx';
 import Selected from './Select.jsx';
@@ -6,6 +7,9 @@ import Selected from './Select.jsx';
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.config = props.config;
+    console.log(this.config);
 
     this.state = {
       searchResult: {},
@@ -64,10 +68,17 @@ class App extends React.Component {
         <List
           searchResult={searchResult}
           onSelected={this.onSelected}
+          showAvatar={this.config.showAvatars}
         />
       </div>
     );
   }
 }
+
+App.propTypes = {
+  config: PropTypes.shape({
+    multiple: PropTypes.bool,
+  }).isRequired,
+};
 
 export default App;
