@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createIcon } from '@download/blockies';
+import { connect } from 'react-redux';
 
 class List extends React.Component {
   constructor(props) {
     super(props);
 
     this.onError = this.onError.bind(this);
-    this.onSelected = this.onSelected.bind(this);
   }
 
   onError(e) {
@@ -22,21 +22,17 @@ class List extends React.Component {
     parent.appendChild(icon);
   }
 
-  onSelected(e) {
-    const { onSelected } = this.props;
-    onSelected(e.target.id);
-  }
-
   render() {
-    const { searchResult: res, showAvatar: show } = this.props;
+    const { showAvatar: show, store, onClick } = this.props;
+    const { searchResult: res } = store;
 
     return (
       <div>
-        <ul>
+        <ul onClick={onClick}>
           {Object.keys(res).map(key => (
             <li
-              onClick={this.onSelected}
               id={key}
+              key={key}
             >
               {res[key].personalName}
               {res[key].familyName}
@@ -58,9 +54,9 @@ class List extends React.Component {
 }
 
 List.propTypes = {
-  searchResult: PropTypes.objectOf(PropTypes.object).isRequired,
-  onSelected: PropTypes.func.isRequired,
   showAvatar: PropTypes.bool.isRequired,
+  store: PropTypes.objectOf(PropTypes.object).isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
-export default List;
+export default connect(store => ({ store }))(List);

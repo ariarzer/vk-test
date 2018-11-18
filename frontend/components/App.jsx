@@ -1,19 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+
 import List from './List.jsx';
 import Selected from './Select.jsx';
+
+import search from '../store/actions/search';
+import select from '../store/actions/select';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.config = props.config;
-    console.log(this.config);
 
     this.state = {
-      searchResult: {},
-      selected: null,
       inputValue: '',
     };
 
@@ -26,23 +28,20 @@ class App extends React.Component {
 
   onChange(e) {
     const { value } = e.target;
+    const { dispatch } = this.props;
 
     this.setState({ inputValue: value });
 
-    if (value) {
-      fetch(`/search?value=${value}`, { cache: 'no-cache' })
-        .then(result => result.text())
-        .then(result => this.setState({ searchResult: JSON.parse(result) }));
-    } else {
-      this.setState({ searchResult: {} });
-    }
+    search(value, dispatch);
   }
 
-  onSelected(id) {
-    const { searchResult, selected } = this.state;
-    if (!Object.is(selected, searchResult[id])) {
-      this.setState({ selected: searchResult[id] });
-    }
+  onSelected(e) {
+    const { id } = e.target;
+    const { multiple } = this.config;
+    const { dispatch } = this.props;
+    const { store: { searchResult } } = this.props;
+
+    select({ [id]: searchResult[id] }, multiple, dispatch);
   }
 
   onAddClick() {
@@ -51,13 +50,15 @@ class App extends React.Component {
   }
 
   render() {
-    const { searchResult, selected, inputValue } = this.state;
+    const { inputValue } = this.state;
+    const { store } = this.props;
+    const { multiple } = this.config;
 
     return (
       <div>
         <Selected
-          selected={selected}
-          onAddClick={this.onAddClick}
+          multiple={multiple}
+          onClick={this.onAddClick}
         />
         <input
           autoComplete="off"
@@ -66,9 +67,9 @@ class App extends React.Component {
           ref={this.textInput}
         />
         <List
-          searchResult={searchResult}
-          onSelected={this.onSelected}
+          searchResult={store.searchResult}
           showAvatar={this.config.showAvatars}
+          onClick={this.onSelected}
         />
       </div>
     );
@@ -79,6 +80,8 @@ App.propTypes = {
   config: PropTypes.shape({
     multiple: PropTypes.bool,
   }).isRequired,
+  store: PropTypes.objectOf(PropTypes.object).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
-export default App;
+export default connect(store => ({ store }))(App);
