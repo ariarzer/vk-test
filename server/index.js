@@ -17,12 +17,12 @@ app.use((req, res, next) => {
 
 app.use(express.static('static'));
 
-app.get('/search', (req, res) => {
+app.get('/api/v0/search', (req, res) => {
   const { value } = req.query;
   res.send(tree.find(value, usersData));
 });
 
-app.get('/users', (req, res) => {
+app.get('/api/v0/users', (req, res) => {
   const { ids, start, count } = req.query;
   if (ids) {
     res.send(JSON.parse(ids).reduce((acc, cur) => ({ ...acc, [cur]: usersData[cur] }), {}));

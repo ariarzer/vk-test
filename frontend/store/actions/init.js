@@ -2,7 +2,7 @@ const FindTree = require('../../../libs/find-tree');
 const User = require('../../../libs/users');
 
 export default function init(count, dispatch) {
-  fetch(`/users?start=${0}&count=${count}`, { cache: 'no-cache' })
+  fetch(`/api/v0/users?start=${0}&count=${count}`, { cache: 'no-cache' })
     .then(result => result.text())
     .then((result) => {
       dispatch({ type: 'INIT_USERS', value: JSON.parse(result) });

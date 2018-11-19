@@ -34,13 +34,11 @@ class Dropdown extends React.Component {
     init(100, dispatch);
   }
 
-  onChange(e) {
-    const { value } = e.target;
-
+  onChange({ target: { value } }) {
     this.setState({ inputValue: value });
 
     if (value) {
-      fetch(`/search?value=${value}`, { cache: 'no-cache' })
+      fetch(`/api/v0/search?value=${value}`, { cache: 'no-cache' })
         .then(result => result.text())
         .then(result => this.setState({ searchResult: JSON.parse(result) }));
     } else {
@@ -48,8 +46,7 @@ class Dropdown extends React.Component {
     }
   }
 
-  onSelected(e) {
-    const { id } = e.target;
+  onSelected({ target: { id } }) {
     const { multiple } = this.config;
     const { selectList, searchResult } = this.state;
 
@@ -65,8 +62,7 @@ class Dropdown extends React.Component {
     this.textInput.current.focus();
   }
 
-  onClickRemove(e) {
-    const { id } = e.target;
+  onClickRemove({ target: { id } }) {
     const { selectList } = this.state;
 
     this.setState({
