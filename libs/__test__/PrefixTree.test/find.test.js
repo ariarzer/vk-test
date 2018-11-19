@@ -1,12 +1,12 @@
 const users = require('../testData/users');
 
-const Users = require('../../Users');
-const PrefixTree = require('../../PrefixTree.js');
+const Users = require('../../users');
+const FindTree = require('../../find-tree.js');
 
 const names = new Users(users).get('personalName');
 const surnames = new Users(users).get('familyName');
 
-const tree = new PrefixTree(surnames, new PrefixTree(names).tree);
+const tree = new FindTree(surnames, new FindTree(names).tree);
 
 const findRogozov = require('../testData/find_rogozov');
 
