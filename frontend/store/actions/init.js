@@ -12,5 +12,4 @@ export default function init(count, dispatch) {
       const tree = new FindTree(users.get('personalName'), new FindTree(users.get('familyName')).tree);
       dispatch({ type: 'INIT_FIND_TREE', value: tree });
     });
-
 }

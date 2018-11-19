@@ -7,6 +7,7 @@ import List from './List.jsx';
 import SelectList from './SelectList.jsx';
 
 import init from '../store/actions/init';
+import update from '../store/actions/update';
 
 class Dropdown extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class Dropdown extends React.Component {
       inputValue: '',
       searchResult: {},
       selectList: {},
+      users: {},
     };
 
     this.onChange = this.onChange.bind(this);
@@ -36,11 +38,28 @@ class Dropdown extends React.Component {
 
   onChange({ target: { value } }) {
     this.setState({ inputValue: value });
+    const { store, dispatch } = this.props;
 
     if (value) {
       fetch(`/api/v0/search?value=${value}`, { cache: 'no-cache' })
         .then(result => result.text())
-        .then(result => this.setState({ searchResult: JSON.parse(result) }));
+        .then(result => JSON.parse(result))
+        .then((result) => {
+          this.setState({ searchResult: result });
+          const diffList = result.reduce((acc, cur) => {
+            if (Object.keys(store.users).includes(cur)) {
+              return acc;
+            }
+            return [...acc, cur];
+          }, []);
+          fetch(`/api/v0/users?ids=${JSON.stringify(diffList.slice(100))}`, { cache: 'no-cache' })
+            .then(res => res.text())
+            .then(res => JSON.parse(res))
+            .then((res) => {
+              this.setState({ users: res });
+              update(res, store, dispatch);
+            });
+        });
     } else {
       this.setState({ searchResult: {} });
     }
@@ -76,7 +95,7 @@ class Dropdown extends React.Component {
   }
 
   render() {
-    const { inputValue, selectList, searchResult } = this.state;
+    const { inputValue, selectList, users } = this.state;
     const { store } = this.props;
     const { multiple } = this.config;
 
@@ -98,7 +117,13 @@ class Dropdown extends React.Component {
           searchResult={store.searchResult}
           showAvatar={this.config.showAvatars}
           onClick={this.onSelected}
-          list={searchResult}
+          list={Object.assign(
+            {},
+            store.tree
+              ? store.tree.find(inputValue, store.users)
+              : {},
+            users,
+          )}
         />
       </div>
     );
