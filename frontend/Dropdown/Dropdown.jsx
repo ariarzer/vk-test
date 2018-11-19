@@ -59,6 +59,8 @@ class Dropdown extends React.Component {
               this.setState({ users: res });
               update(res, store, dispatch);
             });
+          const { searchResult } = this.state;
+          this.setState({ searchResult: searchResult.slice(100, searchResult.length) });
         });
     } else {
       this.setState({ searchResult: {} });
