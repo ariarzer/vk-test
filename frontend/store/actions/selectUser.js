@@ -1,4 +1,4 @@
-function select(value, multiple, dispatch) {
+function selectUser(value, multiple, dispatch) {
   if (multiple) {
     dispatch({ type: 'ADD_SELECT', value });
   } else {
@@ -6,4 +6,4 @@ function select(value, multiple, dispatch) {
   }
 }
 
-export default select;
+export default selectUser;

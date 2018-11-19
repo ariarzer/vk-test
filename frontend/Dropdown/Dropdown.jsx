@@ -7,7 +7,8 @@ import List from './List.jsx';
 import Selected from './Select.jsx';
 
 import search from '../store/actions/search';
-import select from '../store/actions/select';
+import selectUser from '../store/actions/selectUser';
+import removeSelectItem from '../store/actions/remove-select-item';
 
 class Dropdown extends React.Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class Dropdown extends React.Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSelected = this.onSelected.bind(this);
-    this.onAddClick = this.onAddClick.bind(this);
+    this.onClickAdd = this.onClickAdd.bind(this);
+    this.onClickRemove = this.onClickRemove.bind(this);
 
     this.textInput = React.createRef();
   }
@@ -41,12 +43,18 @@ class Dropdown extends React.Component {
     const { dispatch } = this.props;
     const { store: { searchResult } } = this.props;
 
-    select({ [id]: searchResult[id] }, multiple, dispatch);
+    selectUser({ [id]: searchResult[id] }, multiple, dispatch);
   }
 
-  onAddClick() {
+  onClickAdd() {
     this.setState({ inputValue: '' });
     this.textInput.current.focus();
+  }
+
+  onClickRemove(e) {
+    const { dispatch, store: { select: s } } = this.props;
+    const { id } = e.target;
+    removeSelectItem(id, s, dispatch);
   }
 
   render() {
@@ -58,7 +66,8 @@ class Dropdown extends React.Component {
       <div>
         <Selected
           multiple={multiple}
-          onClick={this.onAddClick}
+          onClickAdd={this.onClickAdd}
+          onClickRemove={this.onClickRemove}
         />
         <input
           autoComplete="off"
