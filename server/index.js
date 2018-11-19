@@ -22,6 +22,18 @@ app.get('/search', (req, res) => {
   res.send(tree.find(value, usersData));
 });
 
+app.get('/users', (req, res) => {
+  const { ids, start, count } = req.query;
+  if (ids) {
+    res.send(JSON.parse(ids).reduce((acc, cur) => ({ ...acc, [cur]: usersData[cur] }), {}));
+  }
+  if (start && count) {
+    res.send(Object.keys(usersData)
+      .slice(+start, +start + +count)
+      .reduce((acc, cur) => ({ ...acc, [cur]: usersData[cur] }), {}));
+  }
+});
+
 app.listen(process.env.PORT || 8080, (error) => {
   if (error) {
     console.error(error);
