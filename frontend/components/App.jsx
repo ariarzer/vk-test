@@ -21,6 +21,7 @@ class App extends React.Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSelected = this.onSelected.bind(this);
+    this.onAddClick = this.onAddClick.bind(this);
 
     this.textInput = React.createRef();
   }
@@ -43,6 +44,11 @@ class App extends React.Component {
     select({ [id]: searchResult[id] }, multiple, dispatch);
   }
 
+  onAddClick() {
+    this.setState({ inputValue: '' });
+    this.textInput.current.focus();
+  }
+
   render() {
     const { inputValue } = this.state;
     const { store } = this.props;
@@ -52,7 +58,7 @@ class App extends React.Component {
       <div>
         <Selected
           multiple={multiple}
-          onClick={this.onSelected}
+          onClick={this.onAddClick}
         />
         <input
           autoComplete="off"
