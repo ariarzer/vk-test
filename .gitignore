@@ -1,4 +1,4 @@
-data/users.json
+data/*
 static/dist/
 frontend/data/*
 libs/__test__/testData/generateCases.js

@@ -1,4 +1,4 @@
-const Users = require('../../Users');
+const Users = require('../../users');
 
 const users = require('../testData/users');
 const personalName = require('../testData/personalName');

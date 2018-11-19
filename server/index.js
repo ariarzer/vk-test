@@ -1,13 +1,12 @@
-const url = require('url');
 const express = require('express');
 
-const User = require('./libs/Users');
-const PrefixTree = require('./libs/PrefixTree');
+const User = require('../libs/users');
+const FindTree = require('../libs/find-tree');
 
-const usersData = require('./data/users.json');
+const usersData = require('../data/users.json');
 
 const users = new User(usersData);
-const tree = new PrefixTree(users.get('personalName'), new PrefixTree(users.get('familyName')).tree);
+const tree = new FindTree(users.get('personalName'), new FindTree(users.get('familyName')).tree);
 
 const app = express();
 
@@ -19,7 +18,7 @@ app.use((req, res, next) => {
 app.use(express.static('static'));
 
 app.get('/search', (req, res) => {
-  const { value } = url.parse(req.url, true).query;
+  const { value } = req.query;
   res.send(tree.find(value, usersData));
 });
 

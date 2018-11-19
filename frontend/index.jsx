@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store/store.js';
 
-import App from './components/App.jsx';
+import Dropdown from './Dropdown/Dropdown.jsx';
 
 const config = {
   multiple: true,
@@ -13,7 +13,7 @@ const config = {
 
 ReactDOM.render(
   <Provider store={store}>
-    <App config={config} />
+    <Dropdown config={config} />
   </Provider>,
   document.getElementById('root'),
 );

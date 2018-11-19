@@ -9,7 +9,7 @@ import Selected from './Select.jsx';
 import search from '../store/actions/search';
 import select from '../store/actions/select';
 
-class App extends React.Component {
+class Dropdown extends React.Component {
   constructor(props) {
     super(props);
 
@@ -76,7 +76,7 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = {
+Dropdown.propTypes = {
   config: PropTypes.shape({
     multiple: PropTypes.bool,
   }).isRequired,
@@ -84,4 +84,4 @@ App.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect(store => ({ store }))(App);
+export default connect(store => ({ store }))(Dropdown);

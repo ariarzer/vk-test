@@ -1,4 +1,4 @@
-const corerctingLayout = require('../../correctingLayout');
+const corerctingLayout = require('../../correcting-layout');
 
 test('for correcting layout', () => {
   expect(corerctingLayout('z dcz nfrfz cnhjrf')).toEqual('я вся такая строка');

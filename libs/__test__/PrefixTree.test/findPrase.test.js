@@ -5,13 +5,13 @@ const findOliviaMadlen = require('../testData/find_Olivia_Madlen');
 const findYa = require('../testData/find_Я');
 const findSch = require('../testData/find_Щ');
 
-const Users = require('../../Users');
-const PrefixTree = require('../../PrefixTree.js');
+const Users = require('../../users');
+const FindTree = require('../../find-tree.js');
 
 const names = new Users(users).get('personalName');
 const surnames = new Users(users).get('familyName');
 
-const tree = new PrefixTree(surnames, new PrefixTree(names).tree);
+const tree = new FindTree(surnames, new FindTree(names).tree);
 
 test('for findPhrase M', () => {
   expect(tree.findPhrase('M', users)).toEqual(findM);

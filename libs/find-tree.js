@@ -1,7 +1,7 @@
-const correctingLayout = require('./correctingLayout');
+const correctingLayout = require('./correcting-layout');
 const transliterate = require('./transliterate');
 
-class prefixTree {
+class FindTree {
   constructor(wordList, treeRoot = { data: '' }) {
     Object.keys(wordList).forEach((key) => {
       const letters = wordList[key].toLowerCase().split('');
@@ -106,4 +106,4 @@ class prefixTree {
   }
 }
 
-module.exports = prefixTree;
+module.exports = FindTree;

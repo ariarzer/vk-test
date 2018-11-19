@@ -2,7 +2,7 @@
   "name": "vk-test-task",
   "version": "0.1.0",
   "description": "Test task for VK",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "test": "jest && npm run lint",
     "lint": "eslint \"**/*.js{,x}\"",
