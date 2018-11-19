@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import List from './List.jsx';
 import SelectList from './SelectList.jsx';
 
+import init from '../store/actions/init';
+
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,12 @@ class Dropdown extends React.Component {
     this.onClickRemove = this.onClickRemove.bind(this);
 
     this.textInput = React.createRef();
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    init(100, dispatch);
   }
 
   onChange(e) {
@@ -106,6 +114,7 @@ Dropdown.propTypes = {
     multiple: PropTypes.bool,
   }).isRequired,
   store: PropTypes.objectOf(PropTypes.object).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(store => ({ store }))(Dropdown);
