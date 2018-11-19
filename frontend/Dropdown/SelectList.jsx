@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-function Select(props) {
+function SelectList(props) {
   const {
-    multiple, store: { select }, onClickAdd, onClickRemove,
+    multiple, onClickAdd, onClickRemove, selectList,
   } = props;
 
-  return (Object.keys(select).length
+  return (Object.keys(selectList).length !== 0
     ? (
       <div>
         <ul>
-          {Object.keys(select).map(key => (
+          {Object.keys(selectList).map(key => (
             <li key={key}>
-              {select[key].personalName}
-              {select[key].familyName}
+              {selectList[key].personalName}
+              {selectList[key].familyName}
               <button type="button" onClick={onClickRemove} id={key}>-</button>
             </li>
           ))}
@@ -28,11 +28,11 @@ function Select(props) {
   );
 }
 
-Select.propTypes = {
-  store: PropTypes.objectOf(PropTypes.object).isRequired,
+SelectList.propTypes = {
   multiple: PropTypes.bool.isRequired,
   onClickAdd: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
+  selectList: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
-export default connect(store => ({ store }))(Select);
+export default connect(store => ({ store }))(SelectList);

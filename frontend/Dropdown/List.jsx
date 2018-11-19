@@ -23,24 +23,23 @@ class List extends React.Component {
   }
 
   render() {
-    const { showAvatar: show, store, onClick } = this.props;
-    const { searchResult: res } = store;
+    const { showAvatar: show, onClick, list } = this.props;
 
     return (
       <div>
         <ul onClick={onClick}>
-          {Object.keys(res).map(key => (
+          {Object.keys(list).map(key => (
             <li
               id={key}
               key={key}
             >
-              {res[key].personalName}
-              {res[key].familyName}
+              {list[key].personalName}
+              {list[key].familyName}
               {show
                 ? (
                   <img
-                    src={res[key].avatar}
-                    alt={`avatar ${res[key].personalName} ${res[key].familyName}`}
+                    src={list[key].avatar}
+                    alt={`avatar ${list[key].personalName} ${list[key].familyName}`}
                     onError={this.onError}
                   />)
                 : null
@@ -55,8 +54,8 @@ class List extends React.Component {
 
 List.propTypes = {
   showAvatar: PropTypes.bool.isRequired,
-  store: PropTypes.objectOf(PropTypes.object).isRequired,
   onClick: PropTypes.func.isRequired,
+  list: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default connect(store => ({ store }))(List);

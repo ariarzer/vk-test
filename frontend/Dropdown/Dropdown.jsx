@@ -4,11 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import List from './List.jsx';
-import Selected from './Select.jsx';
-
-import search from '../store/actions/search';
-import selectUser from '../store/actions/selectUser';
-import removeSelectItem from '../store/actions/remove-select-item';
+import SelectList from './SelectList.jsx';
 
 class Dropdown extends React.Component {
   constructor(props) {
@@ -18,6 +14,8 @@ class Dropdown extends React.Component {
 
     this.state = {
       inputValue: '',
+      searchResult: {},
+      selectList: {},
     };
 
     this.onChange = this.onChange.bind(this);
@@ -30,20 +28,28 @@ class Dropdown extends React.Component {
 
   onChange(e) {
     const { value } = e.target;
-    const { dispatch } = this.props;
 
     this.setState({ inputValue: value });
 
-    search(value, dispatch);
+    if (value) {
+      fetch(`/search?value=${value}`, { cache: 'no-cache' })
+        .then(result => result.text())
+        .then(result => this.setState({ searchResult: JSON.parse(result) }));
+    } else {
+      this.setState({ searchResult: {} });
+    }
   }
 
   onSelected(e) {
     const { id } = e.target;
     const { multiple } = this.config;
-    const { dispatch } = this.props;
-    const { store: { searchResult } } = this.props;
+    const { selectList, searchResult } = this.state;
 
-    selectUser({ [id]: searchResult[id] }, multiple, dispatch);
+    this.setState({
+      selectList: multiple
+        ? Object.assign({}, selectList, { [id]: searchResult[id] })
+        : { [id]: searchResult[id] },
+    });
   }
 
   onClickAdd() {
@@ -52,22 +58,31 @@ class Dropdown extends React.Component {
   }
 
   onClickRemove(e) {
-    const { dispatch, store: { select: s } } = this.props;
     const { id } = e.target;
-    removeSelectItem(id, s, dispatch);
+    const { selectList } = this.state;
+
+    this.setState({
+      selectList: Object.keys(selectList)
+        .filter(item => item !== id)
+        .reduce((acc, cur) => {
+          acc[cur] = selectList[cur];
+          return acc;
+        }, {}),
+    });
   }
 
   render() {
-    const { inputValue } = this.state;
+    const { inputValue, selectList, searchResult } = this.state;
     const { store } = this.props;
     const { multiple } = this.config;
 
     return (
       <div>
-        <Selected
+        <SelectList
           multiple={multiple}
           onClickAdd={this.onClickAdd}
           onClickRemove={this.onClickRemove}
+          selectList={selectList}
         />
         <input
           autoComplete="off"
@@ -79,6 +94,7 @@ class Dropdown extends React.Component {
           searchResult={store.searchResult}
           showAvatar={this.config.showAvatars}
           onClick={this.onSelected}
+          list={searchResult}
         />
       </div>
     );
@@ -90,7 +106,6 @@ Dropdown.propTypes = {
     multiple: PropTypes.bool,
   }).isRequired,
   store: PropTypes.objectOf(PropTypes.object).isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(store => ({ store }))(Dropdown);
