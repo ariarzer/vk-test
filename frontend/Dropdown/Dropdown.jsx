@@ -18,7 +18,7 @@ class Dropdown extends React.Component {
     this.state = {
       inputValue: '',
       searchResult: {},
-      selectList: {},
+      selectList: [],
       users: {},
     };
 
@@ -70,14 +70,23 @@ class Dropdown extends React.Component {
     }
   }
 
-  onSelected({ target: { id } }) {
+  onSelected(id) {
     const { multiple } = this.config;
-    const { selectList, searchResult } = this.state;
+    const { selectList } = this.state;
 
-    this.setState({
-      selectList: multiple
-        ? Object.assign({}, selectList, { [id]: searchResult[id] })
-        : { [id]: searchResult[id] },
+    this.setState((prevState) => {
+      if (multiple) {
+        return Object.assign(
+          {},
+          prevState,
+          { selectList: (selectList.includes(id) ? selectList : [...selectList, id]) },
+        );
+      }
+      return Object.assign(
+        {},
+        prevState,
+        { selectList: (selectList[0] !== id ? [id] : selectList) },
+      );
     });
   }
 
@@ -90,12 +99,10 @@ class Dropdown extends React.Component {
     const { selectList } = this.state;
 
     this.setState({
-      selectList: Object.keys(selectList)
-        .filter(item => item !== id)
-        .reduce((acc, cur) => {
-          acc[cur] = selectList[cur];
-          return acc;
-        }, {}),
+      selectList: [
+        ...selectList.slice(0, selectList.indexOf(id)),
+        ...selectList.slice(selectList.indexOf(id) + 1, selectList.length),
+      ],
     });
   }
 

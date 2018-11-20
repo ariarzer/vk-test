@@ -23,7 +23,9 @@ class List extends React.Component {
   }
 
   render() {
-    const { showAvatar: show, onClick, list, className } = this.props;
+    const {
+      showAvatar: show, onClick, list, className,
+    } = this.props;
 
     return (
       <div className={className}>
@@ -32,6 +34,7 @@ class List extends React.Component {
             <li
               id={key}
               key={key}
+              onClick={onClick.bind(null, key)}
             >
               {list[key].personalName}
               {list[key].familyName}
