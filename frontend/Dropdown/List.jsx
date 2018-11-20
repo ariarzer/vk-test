@@ -52,6 +52,7 @@ class List extends React.Component {
                 <div className="search-item__content">
                   <div className="search-item__name">
                     {list[key].personalName}
+                    {' '}
                     {list[key].familyName}
                   </div>
                   <div className="search-item__meta">

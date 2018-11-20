@@ -14,6 +14,7 @@ function SelectList(props) {
           {(selectList).map(key => (
             <li key={key}>
               {users[key].personalName}
+              {' '}
               {users[key].familyName}
               <button type="button" onClick={onClickRemove} id={key}>-</button>
             </li>
