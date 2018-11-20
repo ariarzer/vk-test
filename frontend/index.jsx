@@ -13,7 +13,9 @@ const config = {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Dropdown config={config} />
+    <div className="container">
+      <Dropdown config={config} />
+    </div>
   </Provider>,
   document.getElementById('root'),
 );

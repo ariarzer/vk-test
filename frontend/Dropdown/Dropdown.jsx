@@ -41,18 +41,21 @@ class Dropdown extends React.Component {
     const { store, dispatch } = this.props;
 
     if (value) {
+      // for ids
       fetch(`/api/v0/search?value=${value}`, { cache: 'no-cache' })
         .then(result => result.text())
         .then(result => JSON.parse(result))
         .then((result) => {
           this.setState({ searchResult: result });
+          // diff with store.users
           const diffList = result.reduce((acc, cur) => {
             if (Object.keys(store.users).includes(cur)) {
               return acc;
             }
             return [...acc, cur];
           }, []);
-          fetch(`/api/v0/users?ids=${JSON.stringify(diffList.slice(100))}`, { cache: 'no-cache' })
+          // for users data
+          fetch(`/api/v0/users?ids=${JSON.stringify(diffList.slice(0, 100))}`, { cache: 'no-cache' })
             .then(res => res.text())
             .then(res => JSON.parse(res))
             .then((res) => {
@@ -102,20 +105,25 @@ class Dropdown extends React.Component {
     const { multiple } = this.config;
 
     return (
-      <div>
-        <SelectList
-          multiple={multiple}
-          onClickAdd={this.onClickAdd}
-          onClickRemove={this.onClickRemove}
-          selectList={selectList}
-        />
-        <input
-          autoComplete="off"
-          onChange={this.onChange}
-          value={inputValue}
-          ref={this.textInput}
-        />
+      <div className="dropdown">
+        <div className="dropdown__input-box">
+          <SelectList
+            multiple={multiple}
+            onClickAdd={this.onClickAdd}
+            onClickRemove={this.onClickRemove}
+            selectList={selectList}
+            className="dropdown__select-list"
+          />
+          <input
+            autoComplete="off"
+            onChange={this.onChange}
+            value={inputValue}
+            ref={this.textInput}
+            className="dropdown__input"
+          />
+        </div>
         <List
+          className="dropdown__search-list"
           searchResult={store.searchResult}
           showAvatar={this.config.showAvatars}
           onClick={this.onSelected}

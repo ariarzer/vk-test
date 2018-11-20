@@ -23,10 +23,10 @@ class List extends React.Component {
   }
 
   render() {
-    const { showAvatar: show, onClick, list } = this.props;
+    const { showAvatar: show, onClick, list, className } = this.props;
 
     return (
-      <div>
+      <div className={className}>
         <ul onClick={onClick}>
           {Object.keys(list).map(key => (
             <li
@@ -56,6 +56,7 @@ List.propTypes = {
   showAvatar: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
   list: PropTypes.objectOf(PropTypes.object).isRequired,
+  className: PropTypes.string.isRequired,
 };
 
 export default connect(store => ({ store }))(List);
