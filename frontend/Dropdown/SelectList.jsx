@@ -9,19 +9,22 @@ function SelectList(props) {
 
   return (selectList.length !== 0
     ? (
-      <div>
-        <ul>
-          {(selectList).map(key => (
-            <li key={key}>
-              {users[key].personalName}
-              {' '}
-              {users[key].familyName}
-              <button type="button" onClick={onClickRemove} id={key}>-</button>
-            </li>
-          ))}
-        </ul>
+      <div className="dropdown__select-list select-list">
+        {(selectList).map(key => (
+          <div key={key} className="select-list__item">
+            {users[key].personalName}
+            {' '}
+            {users[key].familyName}
+            <button type="button" onClick={onClickRemove} id={key} className="select-list__remove-button">-</button>
+          </div>
+        ))}
         {multiple
-          ? (<button type="button" onClick={onClickAdd}>Add+</button>)
+          ? (
+            <button type="button" onClick={onClickAdd} className="select-list__add-button">
+              Add
+              <span className="select-list__button-icon">+</span>
+            </button>
+          )
           : null}
       </div>
     )
