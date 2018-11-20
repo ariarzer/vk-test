@@ -130,7 +130,6 @@ class Dropdown extends React.Component {
           />
         </div>
         <List
-          className="dropdown__search-list"
           searchResult={store.searchResult}
           showAvatar={this.config.showAvatars}
           onClick={this.onSelected}
