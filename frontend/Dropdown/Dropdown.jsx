@@ -40,32 +40,45 @@ class Dropdown extends React.Component {
     this.setState({ inputValue: value });
     const { store, dispatch } = this.props;
 
-    if (value) {
-      // for ids
-      fetch(`/api/v0/search?value=${value}`, { cache: 'no-cache' })
-        .then(result => result.text())
-        .then(result => JSON.parse(result))
-        .then((result) => {
-          this.setState({ searchResult: result });
-          // diff with store.users
-          const diffList = result.reduce((acc, cur) => {
-            if (Object.keys(store.users).includes(cur)) {
-              return acc;
-            }
-            return [...acc, cur];
-          }, []);
-          // for users data
-          fetch(`/api/v0/users?ids=${JSON.stringify(diffList.slice(0, 100))}`, { cache: 'no-cache' })
-            .then(res => res.text())
-            .then(res => JSON.parse(res))
-            .then((res) => {
-              update(res, store, dispatch);
-            });
-          this.setState({ lastLoad: 100 });
-        });
-    } else {
+    this.setState({ inputValue: value });
+
+    if (!value) {
       this.setState({ searchResult: [] });
+
+      return;
     }
+
+    this.setState({ loading: true });
+
+    fetch(`/api/v0/search?value=${value}`, { cache: 'no-cache' })
+      .then((result) => {
+        if (!result.ok) {
+          throw result.error;
+        }
+
+        return result.json();
+      })
+      .then((result) => {
+        this.setState({ searchResult: result });
+
+        const diffList = result.reduce((acc, cur) => (store.users[cur] ? acc : [...acc, cur]), []);
+
+        return fetch(`/api/v0/users?ids=${JSON.stringify(diffList.slice(0, 100))}`, { cache: 'no-cache' });
+      })
+      .then((result) => {
+        if (!result.ok) {
+          throw result.error;
+        }
+
+        return result.json();
+      })
+      .then(result => update(result, store, dispatch))
+      .then(() => {
+        this.setState({ lastLoad: 100, loading: false, error: null, });
+      })
+      .catch((error) => {
+        this.setState({ loading: false, error });
+      });
   }
 
   onSelected(id) {
