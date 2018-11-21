@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import List from './List.jsx';
+import UsersList from './UsersList.jsx';
 import SelectList from './SelectList.jsx';
 
 import init from '../store/actions/init';
@@ -144,12 +144,10 @@ class Dropdown extends React.Component {
             className="dropdown__input"
           />
         </div>
-        <List
+        <UsersList
           showAvatar={showAvatar}
           onClick={this.onSelected}
-          list={[
-            ...searchResult.slice(0, lastLoad),
-          ]}
+          list={searchResult.slice(0, lastLoad)}
         />
       </div>
     );
