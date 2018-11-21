@@ -7,7 +7,7 @@ import UsersList from './UsersList.jsx';
 import SelectList from './SelectList.jsx';
 
 import init from '../store/actions/init';
-import update from '../store/actions/update';
+import update from '../store/actions/update-users';
 
 class Dropdown extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class Dropdown extends React.Component {
     this.onSelected = this.onSelected.bind(this);
     this.onClickAdd = this.onClickAdd.bind(this);
     this.onClickRemove = this.onClickRemove.bind(this);
-    this.loadSearch = this.loadSearch.bind(this);
+    this.loadSearchResult = this.loadSearchResult.bind(this);
 
     this.textInput = React.createRef();
   }
@@ -47,7 +47,7 @@ class Dropdown extends React.Component {
 
         return;
       }
-      this.loadSearch(value);
+      this.loadSearchResult(value);
     });
   }
 
@@ -87,7 +87,7 @@ class Dropdown extends React.Component {
     });
   }
 
-  loadSearch() {
+  loadSearchResult() {
     const { store, dispatch } = this.props;
     const { inputValue } = this.state;
     this.setState({ loading: true });

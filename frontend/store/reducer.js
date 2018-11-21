@@ -9,7 +9,7 @@ const reducer = function reducer(state = initialState, action) {
         convTree: action.tree,
       });
 
-    case 'UPDATE':
+    case 'UPDATE_USERS':
       return Object.assign({}, state, {
         users: action.users,
       });
