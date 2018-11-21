@@ -13,8 +13,6 @@ class Dropdown extends React.Component {
   constructor(props) {
     super(props);
 
-    this.config = props.config;
-
     this.state = {
       inputValue: '',
       searchResult: [],
@@ -33,7 +31,12 @@ class Dropdown extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    init(100, dispatch);
+    this.setState({ loading: true });
+    init(100, dispatch)
+      .then(() => this.setState({ loading: true, error: null }))
+      .catch((error) => {
+        this.setState({ loading: false, error });
+      });
   }
 
   onChange({ target: { value } }) {
@@ -82,7 +85,7 @@ class Dropdown extends React.Component {
   }
 
   onSelected(id) {
-    const { multiple } = this.config;
+    const { multiple } = this.props;
     const { selectList } = this.state;
 
     this.setState((prevState) => {
