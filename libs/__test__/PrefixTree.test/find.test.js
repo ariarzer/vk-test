@@ -10,7 +10,7 @@ const tree = new FindTree(surnames, new FindTree(names).tree);
 
 const findRogozov = require('../testData/find_rogozov');
 
-const rogozov = ['рого', 'hjuj', 'rogo', 'кщпщ'];
+const rogozov = ['рого', 'hjuj', 'rogo', 'кщпщ', 'андрей р'];
 
 rogozov.forEach((item) => {
   test(`for find Рогозов ${item}`, () => {

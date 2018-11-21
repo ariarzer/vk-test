@@ -34,5 +34,5 @@ test('for findPhrase Щ', () => {
 });
 
 test('for findPhrase кщпщ', () => {
-  expect(tree.findPhrase('кщпщ', users)).toEqual({});
+  expect(tree.findPhrase('кщпщ', users)).toEqual([]);
 });

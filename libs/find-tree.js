@@ -28,14 +28,14 @@ class FindTree {
 
   find(praseCase, wordlist) {
     const prase = praseCase.toLowerCase();
-    return {
+    return this.unique([
       ...this.findPhrase(prase, wordlist),
       ...this.findPhrase(correctingLayout(prase), wordlist),
       ...this.findPhrase(transliterate(prase), wordlist),
       ...this.findPhrase(transliterate(prase, true), wordlist),
       ...this.findPhrase(transliterate(correctingLayout(prase)), wordlist),
       ...this.findPhrase(transliterate(correctingLayout(prase), true), wordlist),
-    };
+    ]);
   }
 
   findPhrase(phraseCase, wordList) {
@@ -43,31 +43,38 @@ class FindTree {
 
     if (phrase.split(' ').length === 1) {
       try {
-        return this.findLocal(phrase, wordList);
+        return this.findWord(phrase, wordList);
       } catch (e) {
         if (e.message === 'not found') {
-          return {};
+          return [];
         }
       }
     }
 
-    const finds = phrase.split(' ').map(item => this.findLocal(item, wordList));
+    let finds;
+    try {
+      finds = phrase.split(' ').map(item => this.findWord(item, wordList));
+    } catch (e) {
+      if (e.message === 'not found') {
+        return [];
+      }
+    }
 
-    const result = {};
+    const result = [];
 
     finds.forEach((item, index, all) => {
-      Object.keys(item).forEach((key) => {
-        if (all[index + 1] && all[index + 1][key]) {
-          result[key] = item[key];
+      item.forEach((key) => {
+        if (all[index + 1] && all[index + 1].includes(key)) {
+          result.push(key);
         }
       });
     });
 
-    return result;
+    return this.unique(result);
   }
 
-  findLocal(word, wordList) {
-    const result = {};
+  findWord(word) {
+    let result = [];
 
     const letters = word.split('');
 
@@ -79,16 +86,14 @@ class FindTree {
       }
 
       if (symbol === all[all.length - 1]) {
-        this.getNodeIds(curNode[symbol]).forEach((item) => {
-          result[item] = wordList[item];
-        });
+        result = this.getNodeIds(curNode[symbol]);
       }
 
       curNode = curNode[symbol];
       return 0;
     });
 
-    return result;
+    return this.unique(result);
   }
 
   getNodeIds(node, result = []) {
@@ -103,6 +108,10 @@ class FindTree {
     });
 
     return result;
+  }
+
+  unique(arr) {
+    return arr.filter((value, index, self) => self.indexOf(value) === index);
   }
 }
 

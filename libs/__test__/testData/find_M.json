@@ -1,26 +1,7 @@
-{
-  "id294564655": {
-    "personalName": "Myong",
-    "familyName": "Hollis",
-    "meta": "Palmerston, Fuller Road",
-    "avatar": "img0.png"
-  },
-  "id837363064": {
-    "personalName": "Mitch",
-    "familyName": "Latshaw",
-    "meta": "Fresno, Winston Road",
-    "avatar": "img2.png"
-  },
-  "id487189385": {
-    "personalName": "Michelle",
-    "familyName": "Correa",
-    "meta": "Danbury, Elton Way",
-    "avatar": "img3.png"
-  },
-  "id413282689": {
-    "personalName": "Olivia",
-    "familyName": "Madlen",
-    "meta": "Burwood, Golden Lane",
-    "avatar": "img4.png"
-  }
-}
+[
+  "id294564655",
+  "id837363064",
+  "id487189385",
+  "id413282689"
+]
+
