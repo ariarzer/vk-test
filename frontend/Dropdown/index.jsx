@@ -18,6 +18,7 @@ class Dropdown extends React.Component {
       searchResult: [],
       selectList: [],
       lastLoad: 0,
+      loading: true,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -32,7 +33,6 @@ class Dropdown extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    this.setState({ loading: true });
     init(100, dispatch)
       .then(() => this.setState({ loading: false, error: null }))
       .catch((error) => {
