@@ -10,12 +10,15 @@ class UsersList extends React.Component {
 
   render() {
     const {
-      showAvatar, onClick, list: search, store: { users, conversation },
+      showAvatar, onClick, search, store: { users, conversation, convTree}, inputValue,
     } = this.props;
-
-    const list = conversation
-      ? (search.length ? search : conversation)
-      : [];
+    let list;
+    if (!inputValue) {
+      list = conversation || [];
+    } else {
+      list = search.length ? [...search] : convTree.find(inputValue, conversation);
+    }
+    console.log('render list', list.length, search.length);
 
     return (list.length
       ? (
@@ -42,8 +45,9 @@ class UsersList extends React.Component {
 UsersList.propTypes = {
   showAvatar: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
-  list: PropTypes.objectOf(PropTypes.object).isRequired,
+  search: PropTypes.objectOf(PropTypes.object).isRequired,
   store: PropTypes.objectOf(PropTypes.object).isRequired,
+  inputValue: PropTypes.string.isRequired,
 };
 
 export default connect(store => ({ store }))(UsersList);

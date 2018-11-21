@@ -24,6 +24,7 @@ class Dropdown extends React.Component {
     this.onSelected = this.onSelected.bind(this);
     this.onClickAdd = this.onClickAdd.bind(this);
     this.onClickRemove = this.onClickRemove.bind(this);
+    this.loadMore = this.loadMore.bind(this);
 
     this.textInput = React.createRef();
   }
@@ -31,57 +32,22 @@ class Dropdown extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    this.setState({ loading: true });
+    this.setState({ loading: true }, () => console.log('loading'));
     init(100, dispatch)
-      .then(() => this.setState({ loading: true, error: null }))
+      .then(() => this.setState({ loading: false, error: null }, () => console.log('load')))
       .catch((error) => {
         this.setState({ loading: false, error });
       });
   }
 
   onChange({ target: { value } }) {
-    this.setState({ inputValue: value });
-    const { store, dispatch } = this.props;
-
-    this.setState({ inputValue: value });
-
+    this.setState({ inputValue: value }, () => console.log('input empty'));
     if (!value) {
-      this.setState({ searchResult: [] });
+      this.setState({ searchResult: [] }, () => console.log('search empty'));
 
       return;
     }
-
-    this.setState({ loading: true });
-
-    fetch(`/api/v0/search?value=${value}`, { cache: 'no-cache' })
-      .then((result) => {
-        if (!result.ok) {
-          throw result.error;
-        }
-
-        return result.json();
-      })
-      .then((result) => {
-        this.setState({ searchResult: result });
-
-        const diffList = result.reduce((acc, cur) => (store.users[cur] ? acc : [...acc, cur]), []);
-
-        return fetch(`/api/v0/users?ids=${JSON.stringify(diffList.slice(0, 100))}`, { cache: 'no-cache' });
-      })
-      .then((result) => {
-        if (!result.ok) {
-          throw result.error;
-        }
-
-        return result.json();
-      })
-      .then(result => update(result, store, dispatch))
-      .then(() => {
-        this.setState({ lastLoad: 100, loading: false, error: null });
-      })
-      .catch((error) => {
-        this.setState({ loading: false, error });
-      });
+    this.loadMore(value);
   }
 
   onSelected(id) {
@@ -120,6 +86,43 @@ class Dropdown extends React.Component {
     });
   }
 
+  loadMore(inputValue) {
+    const { store, dispatch } = this.props;
+    this.setState({ loading: true }, () => console.log('loading'));
+    let searchResult;
+
+    fetch(`/api/v0/search?value=${inputValue}`, { cache: 'no-cache' })
+      .then((result) => {
+        if (!result.ok) {
+          throw result.error;
+        }
+
+        return result.json();
+      })
+      .then((result) => {
+        searchResult = result;
+
+        const diffList = result.reduce((acc, cur) => (store.users[cur] ? acc : [...acc, cur]), []);
+
+        return fetch(`/api/v0/users?ids=${JSON.stringify(diffList.slice(0, 100))}`, { cache: 'no-cache' });
+      })
+      .then((result) => {
+        if (!result.ok) {
+          throw result.error;
+        }
+
+        return result.json();
+      })
+      .then(result => update(result, store, dispatch))
+      .then(() => {
+        console.log('update store');
+        this.setState({ lastLoad: 100, loading: false, error: null, searchResult }, () => console.log('load'));
+      })
+      .catch((error) => {
+        this.setState({ loading: false, error });
+      });
+  }
+
   render() {
     const {
       inputValue, selectList, searchResult, lastLoad,
@@ -147,7 +150,8 @@ class Dropdown extends React.Component {
         <UsersList
           showAvatar={showAvatar}
           onClick={this.onSelected}
-          list={searchResult.slice(0, lastLoad)}
+          search={searchResult.length ? searchResult.slice(0, lastLoad) : []}
+          inputValue={inputValue}
         />
       </div>
     );
