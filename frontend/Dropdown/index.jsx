@@ -24,7 +24,7 @@ class Dropdown extends React.Component {
     this.onSelected = this.onSelected.bind(this);
     this.onClickAdd = this.onClickAdd.bind(this);
     this.onClickRemove = this.onClickRemove.bind(this);
-    this.loadMore = this.loadMore.bind(this);
+    this.loadSearch = this.loadSearch.bind(this);
 
     this.textInput = React.createRef();
   }
@@ -32,22 +32,23 @@ class Dropdown extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    this.setState({ loading: true }, () => console.log('loading'));
+    this.setState({ loading: true });
     init(100, dispatch)
-      .then(() => this.setState({ loading: false, error: null }, () => console.log('load')))
+      .then(() => this.setState({ loading: false, error: null }))
       .catch((error) => {
         this.setState({ loading: false, error });
       });
   }
 
   onChange({ target: { value } }) {
-    this.setState({ inputValue: value }, () => console.log('input empty'));
-    if (!value) {
-      this.setState({ searchResult: [] }, () => console.log('search empty'));
+    this.setState({ inputValue: value }, () => {
+      if (!value) {
+        this.setState({ searchResult: [] });
 
-      return;
-    }
-    this.loadMore(value);
+        return;
+      }
+      this.loadSearch(value);
+    });
   }
 
   onSelected(id) {
@@ -86,9 +87,10 @@ class Dropdown extends React.Component {
     });
   }
 
-  loadMore(inputValue) {
+  loadSearch() {
     const { store, dispatch } = this.props;
-    this.setState({ loading: true }, () => console.log('loading'));
+    const { inputValue } = this.state;
+    this.setState({ loading: true });
     let searchResult;
 
     fetch(`/api/v0/search?value=${inputValue}`, { cache: 'no-cache' })
@@ -110,13 +112,13 @@ class Dropdown extends React.Component {
         if (!result.ok) {
           throw result.error;
         }
-
         return result.json();
       })
       .then(result => update(result, store, dispatch))
       .then(() => {
-        console.log('update store');
-        this.setState({ lastLoad: 100, loading: false, error: null, searchResult }, () => console.log('load'));
+        this.setState({
+          lastLoad: 100, loading: false, error: null, searchResult,
+        });
       })
       .catch((error) => {
         this.setState({ loading: false, error });

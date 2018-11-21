@@ -15,14 +15,14 @@ function SelectList(props) {
             {users[key].personalName}
             {' '}
             {users[key].familyName}
-            <button type="button" onClick={onClickRemove} id={key} className="select-list__remove-button"></button>
+            <button type="button" onClick={onClickRemove} id={key} className="select-list__remove-button" />
           </div>
         ))}
         {multiple
           ? (
             <button type="button" onClick={onClickAdd} className="select-list__add-button">
               Add
-              <span className="select-list__button-icon"></span>
+              <span className="select-list__button-icon" />
             </button>
           )
           : null}

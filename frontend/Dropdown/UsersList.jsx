@@ -10,15 +10,22 @@ class UsersList extends React.Component {
 
   render() {
     const {
-      showAvatar, onClick, search, store: { users, conversation, convTree}, inputValue,
+      showAvatar, onClick, search, store: { users, conversation, convTree }, inputValue,
     } = this.props;
     let list;
+
     if (!inputValue) {
       list = conversation || [];
+    } else if (convTree) {
+      list = search.length
+        ? convTree.unique([
+          ...convTree.find(inputValue, conversation),
+          ...search,
+        ])
+        : convTree.find(inputValue, conversation);
     } else {
-      list = search.length ? [...search] : convTree.find(inputValue, conversation);
+      list = [];
     }
-    console.log('render list', list.length, search.length);
 
     return (list.length
       ? (

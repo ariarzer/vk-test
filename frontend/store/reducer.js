@@ -6,14 +6,12 @@ const reducer = function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         users: action.users,
         conversation: action.conversation,
-        tree: action.tree,
         convTree: action.tree,
       });
 
     case 'UPDATE':
       return Object.assign({}, state, {
         users: action.users,
-        tree: action.tree,
       });
     default:
       return state;
