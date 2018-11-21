@@ -3,6 +3,13 @@ const fakerENG = require('faker/locale/en_US');
 
 const ru = {};
 
+ru[`id${fakerRU.random.number({ min: 100000000, max: 999999999 })}`] = {
+  personalName: 'Рогозов',
+  familyName: 'Андрей',
+  meta: 'Санкт-Петербург',
+  avatar: fakerRU.fake('https://picsum.photos/50/50?image={{random.number(1084)}}'),
+};
+
 const gen = (generator) => {
   const key = `id${generator.random.number({ min: 100000000, max: 999999999 })}`;
   ru[key] = {
@@ -20,12 +27,5 @@ for (let i = 0; i < 8000; i += 1) {
     gen(fakerRU);
   }
 }
-
-ru[`id${fakerRU.random.number({ min: 100000000, max: 999999999 })}`] = {
-  personalName: 'Рогозов',
-  familyName: 'Андрей',
-  meta: 'Санкт-Петербург',
-  avatar: fakerRU.fake('https://picsum.photos/50/50?image={{random.number(1084)}}'),
-};
 
 console.log(JSON.stringify(ru));
