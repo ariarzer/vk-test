@@ -11,6 +11,7 @@ body {
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   transform: translate(-50%, calc(-50% - 100px));
+  display: flex;
 }
 
 .dropdown {
@@ -27,8 +28,6 @@ body {
 }
 
 .dropdown__input-box {
-  position: relative;
-
   border: 1px solid rgb(211, 217, 222);
   border-radius: 2px 2px 0 0;
   box-sizing: border-box;
@@ -46,9 +45,6 @@ body {
 }
 
 .dropdown__search-list {
-  position: absolute;
-  top: 100%;
-
   width: 100%;
   max-width: 100%;
   max-height: 200px;
