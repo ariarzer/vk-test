@@ -19,7 +19,7 @@ app.use(express.static('static'));
 
 app.get('/api/v0/search', (req, res) => {
   const { value } = req.query;
-  res.send(Object.keys(tree.find(value, usersData)));
+  res.send(tree.find(value, usersData));
 });
 
 app.get('/api/v0/users', (req, res) => {

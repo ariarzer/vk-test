@@ -17,9 +17,9 @@ class Dropdown extends React.Component {
 
     this.state = {
       inputValue: '',
-      searchResult: {},
+      searchResult: [],
       selectList: [],
-      users: {},
+      lastLoad: 0,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -59,14 +59,12 @@ class Dropdown extends React.Component {
             .then(res => res.text())
             .then(res => JSON.parse(res))
             .then((res) => {
-              this.setState({ users: res });
               update(res, store, dispatch);
             });
-          const { searchResult } = this.state;
-          this.setState({ searchResult: searchResult.slice(100, searchResult.length) });
+          this.setState({ lastLoad: 100 });
         });
     } else {
-      this.setState({ searchResult: {} });
+      this.setState({ searchResult: [] });
     }
   }
 
@@ -107,12 +105,13 @@ class Dropdown extends React.Component {
   }
 
   render() {
-    const { inputValue, selectList, users } = this.state;
-    const { store } = this.props;
+    const {
+      inputValue, selectList, searchResult, lastLoad,
+    } = this.state;
     const { multiple } = this.config;
 
     return (
-      <div className="dropdown">
+      <div className="dropdown" ref={this.Dropdown}>
         <div className="dropdown__input-box">
           <SelectList
             multiple={multiple}
@@ -130,16 +129,11 @@ class Dropdown extends React.Component {
           />
         </div>
         <List
-          searchResult={store.searchResult}
           showAvatar={this.config.showAvatars}
           onClick={this.onSelected}
-          list={Object.assign(
-            {},
-            store.tree
-              ? store.tree.find(inputValue, store.users)
-              : {},
-            users,
-          )}
+          list={[
+            ...searchResult.slice(0, lastLoad),
+          ]}
         />
       </div>
     );
