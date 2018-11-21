@@ -146,10 +146,25 @@ body {
   position: absolute;
   right: 0;
 
-  margin-left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  margin-right: 6px;
+
+  height: 12px;
+  width: 12px;
 
   background-color: inherit;
+  background-size: cover;
   border: none;
+}
+
+.select-list__button-icon {
+  background-image: url("./img/icon_add.svg");
+}
+
+.select-list__remove-button {
+  background-image: url("./img/icon_remove.svg");
 }
 
 .select-list__add-button {
@@ -158,5 +173,5 @@ body {
   border: none;
 
   background-color: #dae2ea;
-  color: #55677d
+  color: #55677d;
 }
