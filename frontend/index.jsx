@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store/store.js';
 
-import Dropdown from './Dropdown/Dropdown.jsx';
+import Dropdown from './Dropdown/index.jsx';
 
 const config = {
   multiple: true,
