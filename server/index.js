@@ -10,11 +10,6 @@ const tree = new FindTree(users.get('personalName'), new FindTree(users.get('fam
 
 const app = express();
 
-app.use((req, res, next) => {
-  console.log(req.url);
-  next();
-});
-
 app.use(express.static('static'));
 
 app.get('/api/v0/search', (req, res) => {
