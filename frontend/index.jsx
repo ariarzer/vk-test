@@ -6,15 +6,14 @@ import store from './store/store.js';
 
 import Dropdown from './Dropdown/index.jsx';
 
-const config = {
-  multiple: true,
-  showAvatars: false,
-};
 
 ReactDOM.render(
   <Provider store={store}>
     <div className="container">
-      <Dropdown config={config} />
+      <Dropdown
+        multiple
+        showAvatar={false}
+      />
     </div>
   </Provider>,
   document.getElementById('root'),

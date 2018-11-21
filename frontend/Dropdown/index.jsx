@@ -74,7 +74,7 @@ class Dropdown extends React.Component {
       })
       .then(result => update(result, store, dispatch))
       .then(() => {
-        this.setState({ lastLoad: 100, loading: false, error: null, });
+        this.setState({ lastLoad: 100, loading: false, error: null });
       })
       .catch((error) => {
         this.setState({ loading: false, error });
@@ -121,7 +121,7 @@ class Dropdown extends React.Component {
     const {
       inputValue, selectList, searchResult, lastLoad,
     } = this.state;
-    const { multiple } = this.config;
+    const { multiple, showAvatar } = this.props;
 
     return (
       <div className="dropdown" ref={this.Dropdown}>
@@ -142,7 +142,7 @@ class Dropdown extends React.Component {
           />
         </div>
         <List
-          showAvatar={this.config.showAvatars}
+          showAvatar={showAvatar}
           onClick={this.onSelected}
           list={[
             ...searchResult.slice(0, lastLoad),
@@ -154,11 +154,15 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
-  config: PropTypes.shape({
-    multiple: PropTypes.bool,
-  }).isRequired,
+  multiple: PropTypes.bool,
+  showAvatar: PropTypes.bool,
   store: PropTypes.objectOf(PropTypes.object).isRequired,
   dispatch: PropTypes.func.isRequired,
+};
+
+Dropdown.defaultProps = {
+  multiple: true,
+  showAvatar: true,
 };
 
 export default connect(store => ({ store }))(Dropdown);
