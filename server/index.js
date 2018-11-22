@@ -22,7 +22,7 @@ app.get('/api/v0/search', async (req, res) => {
 });
 
 app.get('/api/v0/users', async (req, res) => {
-  await sleep(1.5);
+  // await sleep(1.5);
 
   let items;
   const { ids, start, count } = req.query;

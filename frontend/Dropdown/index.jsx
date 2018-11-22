@@ -191,8 +191,6 @@ class Dropdown extends React.Component {
     return pr
       .then(result => update(result.items, store, dispatch))
       .then(() => {
-        console.log(startIndex, stopIndex, count);
-
         this.setState({
           lastLoad: lastLoad + count,
           loading: false,
