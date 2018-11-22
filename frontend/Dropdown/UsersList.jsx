@@ -1,13 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { List, InfiniteLoader } from 'react-virtualized';
+
 import UsersListItem from './UsersListItem.jsx';
 
 import './search-list.css';
 
 function UsersList(props) {
   const {
-    list, showAvatar, onClick, store: { users }, loading,
+    list,
+    showAvatar,
+    onClick,
+    loading,
+    loadMore,
+    totalCount,
+    store: { users },
   } = props;
 
   return (
@@ -15,17 +23,35 @@ function UsersList(props) {
       {!loading && !list.length ? (
         <p>Ничего не найдено :(</p>
       ) : (
-        <ul>
-          {list.map(id => (
-            <li
-              key={id}
-              className="search-item"
-              onClick={onClick.bind(null, id)}
-            >
-              <UsersListItem showAvatar={showAvatar} item={users[id]} />
-            </li>
-          ))}
-        </ul>
+        <InfiniteLoader
+          isRowLoaded={({ index }) => !!users[list[index]]}
+          loadMoreRows={loadMore}
+          rowCount={totalCount}
+        >
+          {({ onRowsRendered, registerChild }) => (
+            <List
+              width={380}
+              height={220}
+              rowCount={list.length}
+              rowHeight={50}
+              ref={registerChild}
+              onRowsRendered={onRowsRendered}
+              rowRenderer={({ key, index, style }) => (
+                <div
+                  key={key}
+                  style={style}
+                  className="search-item"
+                  onClick={onClick.bind(null, list[index])}
+                >
+                  <UsersListItem
+                    showAvatar={showAvatar}
+                    item={users[list[index]]}
+                  />
+                </div>
+              )}
+            />
+          )}
+        </InfiniteLoader>
       )}
 
       {loading ? (

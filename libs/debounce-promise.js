@@ -1,4 +1,4 @@
-export default function debouncePromise(func, wait) {
+export default function debouncePromise(func, wait = 300) {
   let timeout;
   let prevPromise;
 

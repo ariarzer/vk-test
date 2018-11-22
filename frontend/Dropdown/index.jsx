@@ -14,11 +14,11 @@ import debouncePromise from '../../libs/debounce-promise';
 
 const search = debouncePromise((value) => {
   return fetch(`/api/v0/search?value=${value}`, { cache: 'no-cache' });
-}, 300);
+});
 
-const loadUser = debouncePromise((ids) => {
+const loadUserByIds = debouncePromise((ids) => {
   return fetch(`/api/v0/users?ids=${JSON.stringify(ids)}`, { cache: 'no-cache' });
-}, 300);
+});
 
 class Dropdown extends React.Component {
   constructor(props) {
@@ -48,14 +48,19 @@ class Dropdown extends React.Component {
   }
 
   onChange = ({ target: { value } }) => {
-    this.setState({ inputValue: value }, () => {
-      if (!value) {
-        this.setState({ searchResult: [] });
+    this.setState({
+      inputValue: value,
 
-        return;
+      ...(!value ? {
+        lastLoad: 0,
+        searchResult: [],
+      } : {
+        loading: true,
+      }),
+    }, () => {
+      if (value) {
+        this.loadSearchResult(value);
       }
-
-      this.loadSearchResult(value);
     });
   };
 
@@ -96,10 +101,12 @@ class Dropdown extends React.Component {
   };
 
   loadSearchResult = () => {
-    const { store, dispatch } = this.props;
+    const { store, dispatch, store: { convTree, conversation } } = this.props;
     const { inputValue } = this.state;
-    this.setState({ loading: true });
-    let searchResult;
+
+    let searchResult = convTree.find(inputValue, conversation);
+
+    this.setState({ searchResult, lastLoad: searchResult.length });
 
     search(inputValue)
       .then((result) => {
@@ -110,9 +117,12 @@ class Dropdown extends React.Component {
         return result.json();
       })
       .then((result) => {
-        searchResult = result;
+        searchResult = convTree.unique([
+          ...searchResult,
+          ...result,
+        ]);
 
-        const diffList = result
+        const diffList = searchResult
           .reduce((uniq, userId) => {
             if (!store.users[userId]) {
               uniq.push(userId);
@@ -125,7 +135,7 @@ class Dropdown extends React.Component {
           return Promise.resolve();
         }
 
-        return loadUser(diffList.slice(0, 100))
+        return loadUserByIds(diffList.slice(0, 100))
           .then((result) => {
             if (!result.ok) {
               throw result.error;
@@ -136,7 +146,10 @@ class Dropdown extends React.Component {
       })
       .then(() => {
         this.setState({
-          lastLoad: 100, loading: false, error: null, searchResult,
+          searchResult,
+          error: null,
+          loading: false,
+          lastLoad: Math.min(100, searchResult.length),
         });
       })
       .catch((error) => {
@@ -150,29 +163,52 @@ class Dropdown extends React.Component {
 
   prepareList = () => {
     const { inputValue, searchResult, lastLoad } = this.state;
-    const { store: { conversation, convTree } } = this.props;
+    const { store: { conversation } } = this.props;
 
-    const search = searchResult.length ? searchResult.slice(0, lastLoad) : [];
-
-    // Empty saarch
     if (!inputValue) {
       return conversation || [];
     }
 
-    if (convTree) {
-      return search.length
-        ? convTree.unique([
-          ...convTree.find(inputValue, conversation),
-          ...search,
-        ])
-        : convTree.find(inputValue, conversation);
-    }
+    return searchResult.length ? searchResult.slice(0, lastLoad) : [];
+  };
 
-    return [];
+  loadMore = ({ startIndex, stopIndex }) => {
+    const { searchResult, lastLoad } = this.state;
+    const { store, dispatch } = this.props;
+
+    const ids = searchResult.slice(startIndex, stopIndex);
+
+    this.setState({ loading: true, error: null });
+
+    return loadUserByIds(ids)
+      .then((response) => {
+        if (!response.ok) {
+          throw response.errors;
+        }
+
+        return response.json();
+      })
+      .then(result => update(result, store, dispatch))
+      .then(() => {
+        this.setState({
+          lastLoad: lastLoad + ids.length,
+          loading: false,
+          error: null,
+        });
+      })
+      .catch((error) => {
+        if (error === 'debounce') {
+          return Promise.resolve();
+        }
+
+        throw error;
+      });
   };
 
   render() {
-    const { inputValue, selectList, loading, error } = this.state;
+    const {
+      inputValue, selectList, loading, error, searchResult,
+    } = this.state;
     const { multiple, showAvatar } = this.props;
 
     const list = this.prepareList();
@@ -201,8 +237,10 @@ class Dropdown extends React.Component {
         ) : (
           <UsersList
             list={list}
+            loadMore={this.loadMore}
             loading={loading}
             showAvatar={showAvatar}
+            totalCount={searchResult.length}
             onClick={this.onSelected}
           />
         )}
