@@ -3,13 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import UsersListItem from './UsersListItem.jsx';
 
-import style from './search-list.css';
+import './search-list.css';
 
 class UsersList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {
       showAvatar, onClick, search, store: { users, conversation, convTree }, inputValue,

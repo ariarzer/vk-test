@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import UsersList from './UsersList.jsx';
 import SelectList from './SelectList.jsx';
 
-import style from './dropdown.css';
+import './dropdown.css';
 
 import init from '../store/actions/init';
 import update from '../store/actions/update-users';
@@ -21,13 +21,8 @@ class Dropdown extends React.Component {
       selectList: [],
       lastLoad: 0,
       loading: true,
+      error: null,
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSelected = this.onSelected.bind(this);
-    this.onClickAdd = this.onClickAdd.bind(this);
-    this.onClickRemove = this.onClickRemove.bind(this);
-    this.loadSearchResult = this.loadSearchResult.bind(this);
 
     this.textInput = React.createRef();
   }
@@ -42,7 +37,7 @@ class Dropdown extends React.Component {
       });
   }
 
-  onChange({ target: { value } }) {
+  onChange = ({ target: { value } }) => {
     this.setState({ inputValue: value }, () => {
       if (!value) {
         this.setState({ searchResult: [] });
@@ -51,9 +46,9 @@ class Dropdown extends React.Component {
       }
       this.loadSearchResult(value);
     });
-  }
+  };
 
-  onSelected(id) {
+  onSelected = (id) => {
     const { multiple } = this.props;
     const { selectList } = this.state;
 
@@ -71,14 +66,14 @@ class Dropdown extends React.Component {
         { selectList: (selectList[0] !== id ? [id] : selectList) },
       );
     });
-  }
+  };
 
-  onClickAdd() {
+  onClickAdd = () => {
     this.setState({ inputValue: '' });
     this.textInput.current.focus();
-  }
+  };
 
-  onClickRemove({ target: { id } }) {
+  onClickRemove = ({ target: { id } }) => {
     const { selectList } = this.state;
 
     this.setState({
@@ -87,9 +82,9 @@ class Dropdown extends React.Component {
         ...selectList.slice(selectList.indexOf(id) + 1, selectList.length),
       ],
     });
-  }
+  };
 
-  loadSearchResult() {
+  loadSearchResult = () => {
     const { store, dispatch } = this.props;
     const { inputValue } = this.state;
     this.setState({ loading: true });
@@ -125,7 +120,7 @@ class Dropdown extends React.Component {
       .catch((error) => {
         this.setState({ loading: false, error });
       });
-  }
+  };
 
   render() {
     const {
@@ -134,7 +129,7 @@ class Dropdown extends React.Component {
     const { multiple, showAvatar } = this.props;
 
     return (
-      <div className="dropdown" ref={this.Dropdown}>
+      <div className="dropdown">
         <div className="dropdown__input-box">
           <SelectList
             multiple={multiple}

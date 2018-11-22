@@ -2,16 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createIcon } from '@download/blockies';
 
-import style from './search-list.css';
+import './search-list.css';
 
 class UsersListItem extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.onError = this.onError.bind(this);
-  }
-
-  onError(e) {
+  onError = (e) => {
     const parent = e.target.parentNode;
     parent.removeChild(e.target);
 
@@ -21,7 +15,7 @@ class UsersListItem extends React.Component {
       scale: 5,
     });
     parent.appendChild(icon);
-  }
+  };
 
   render() {
     const {
