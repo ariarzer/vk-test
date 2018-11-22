@@ -13,17 +13,11 @@ import update from '../store/actions/update-users';
 import debouncePromise from '../libs/debounce-promise';
 import api from '../libs/api';
 
-const search = debouncePromise((value) => {
-  return api('search', { value });
-});
+const search = debouncePromise(value => api('search', { value }));
 
-const loadUserByIds = debouncePromise((ids) => {
-  return api('users', { ids: JSON.stringify(ids) });
-});
+const loadUserByIds = debouncePromise(ids => api('users', { ids: JSON.stringify(ids) }));
 
-const loadUserByIndex = debouncePromise((start, count) => {
-  return api('users', { start, count });
-});
+const loadUserByIndex = debouncePromise((start, count) => api('users', { start, count }));
 
 class Dropdown extends React.Component {
   constructor(props) {
@@ -134,7 +128,7 @@ class Dropdown extends React.Component {
         }
 
         return loadUserByIds(diffList.slice(0, 100))
-          .then(result => update(result.items, store, dispatch));
+          .then(res => update(res.items, store, dispatch));
       })
       .then(() => {
         this.setState({

@@ -1,6 +1,7 @@
+import api from '../../libs/api';
+
 const createTree = require('../../../libs/create-tree');
 const User = require('../../../libs/users');
-import api from '../../libs/api';
 
 export default function init(count, dispatch) {
   return api('users', { start: 0, count })

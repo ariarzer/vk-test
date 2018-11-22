@@ -66,6 +66,7 @@
       "class-methods-use-this": 0,
       "jsx-a11y/click-events-have-key-events": "never",
       "jsx-a11y/no-noninteractive-element-interactions": "never",
+      "jsx-a11y/no-static-element-interactions": "never",
       "no-nested-ternary": 1
     },
     "parser": "babel-eslint"

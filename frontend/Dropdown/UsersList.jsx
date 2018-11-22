@@ -67,6 +67,8 @@ UsersList.propTypes = {
   loading: PropTypes.bool.isRequired,
   store: PropTypes.objectOf(PropTypes.object).isRequired,
   list: PropTypes.objectOf(PropTypes.object).isRequired,
+  loadMore: PropTypes.func.isRequired,
+  totalCount: PropTypes.number.isRequired,
 };
 
 export default connect(store => ({ store }))(UsersList);
