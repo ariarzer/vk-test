@@ -5,54 +5,42 @@ import UsersListItem from './UsersListItem.jsx';
 
 import './search-list.css';
 
-class UsersList extends React.Component {
-  render() {
-    const {
-      showAvatar, onClick, search, store: { users, conversation, convTree }, inputValue,
-    } = this.props;
-    let list;
+function UsersList(props) {
+  const {
+    list, showAvatar, onClick, store: { users }, loading,
+  } = props;
 
-    if (!inputValue) {
-      list = conversation || [];
-    } else if (convTree) {
-      list = search.length
-        ? convTree.unique([
-          ...convTree.find(inputValue, conversation),
-          ...search,
-        ])
-        : convTree.find(inputValue, conversation);
-    } else {
-      list = [];
-    }
+  return (
+    <div className="dropdown__search-list">
+      {!loading && !list.length ? (
+        <p>Ничего не найдено :(</p>
+      ) : (
+        <ul>
+          {list.map(id => (
+            <li
+              key={id}
+              className="search-item"
+              onClick={onClick.bind(null, id)}
+            >
+              <UsersListItem showAvatar={showAvatar} item={users[id]} />
+            </li>
+          ))}
+        </ul>
+      )}
 
-    return (list.length
-      ? (
-        <div className="dropdown__search-list">
-          <ul>
-            {list.map(key => (
-              <li
-                id={key}
-                key={key}
-                className="search-item"
-                onClick={users[key] ? onClick.bind(null, key) : null}
-              >
-                <UsersListItem showAvatar={showAvatar} item={users[key]} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-      : null
-    );
-  }
+      {loading ? (
+        <p>Loading...</p>
+      ) : null}
+    </div>
+  );
 }
 
 UsersList.propTypes = {
   showAvatar: PropTypes.bool.isRequired,
   onClick: PropTypes.func.isRequired,
-  search: PropTypes.objectOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
   store: PropTypes.objectOf(PropTypes.object).isRequired,
-  inputValue: PropTypes.string.isRequired,
+  list: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default connect(store => ({ store }))(UsersList);

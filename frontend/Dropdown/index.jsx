@@ -10,18 +10,28 @@ import './dropdown.css';
 
 import init from '../store/actions/init';
 import update from '../store/actions/update-users';
+import debouncePromise from '../../libs/debounce-promise';
+
+const search = debouncePromise((value) => {
+  return fetch(`/api/v0/search?value=${value}`, { cache: 'no-cache' });
+}, 300);
+
+const loadUser = debouncePromise((ids) => {
+  return fetch(`/api/v0/users?ids=${JSON.stringify(ids)}`, { cache: 'no-cache' });
+}, 300);
 
 class Dropdown extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      loading: true,
+      error: null,
+
       inputValue: '',
       searchResult: [],
       selectList: [],
       lastLoad: 0,
-      loading: true,
-      error: null,
     };
 
     this.textInput = React.createRef();
@@ -44,6 +54,7 @@ class Dropdown extends React.Component {
 
         return;
       }
+
       this.loadSearchResult(value);
     });
   };
@@ -90,7 +101,7 @@ class Dropdown extends React.Component {
     this.setState({ loading: true });
     let searchResult;
 
-    fetch(`/api/v0/search?value=${inputValue}`, { cache: 'no-cache' })
+    search(inputValue)
       .then((result) => {
         if (!result.ok) {
           throw result.error;
@@ -101,32 +112,70 @@ class Dropdown extends React.Component {
       .then((result) => {
         searchResult = result;
 
-        const diffList = result.reduce((acc, cur) => (store.users[cur] ? acc : [...acc, cur]), []);
+        const diffList = result
+          .reduce((uniq, userId) => {
+            if (!store.users[userId]) {
+              uniq.push(userId);
+            }
 
-        return fetch(`/api/v0/users?ids=${JSON.stringify(diffList.slice(0, 100))}`, { cache: 'no-cache' });
-      })
-      .then((result) => {
-        if (!result.ok) {
-          throw result.error;
+            return uniq;
+          }, []);
+
+        if (!diffList.length) {
+          return Promise.resolve();
         }
-        return result.json();
+
+        return loadUser(diffList.slice(0, 100))
+          .then((result) => {
+            if (!result.ok) {
+              throw result.error;
+            }
+            return result.json();
+          })
+          .then(result => update(result, store, dispatch));
       })
-      .then(result => update(result, store, dispatch))
       .then(() => {
         this.setState({
           lastLoad: 100, loading: false, error: null, searchResult,
         });
       })
       .catch((error) => {
+        if (error === 'debounce') {
+          return;
+        }
+
         this.setState({ loading: false, error });
       });
   };
 
+  prepareList = () => {
+    const { inputValue, searchResult, lastLoad } = this.state;
+    const { store: { conversation, convTree } } = this.props;
+
+    const search = searchResult.length ? searchResult.slice(0, lastLoad) : [];
+
+    // Empty saarch
+    if (!inputValue) {
+      return conversation || [];
+    }
+
+    if (convTree) {
+      return search.length
+        ? convTree.unique([
+          ...convTree.find(inputValue, conversation),
+          ...search,
+        ])
+        : convTree.find(inputValue, conversation);
+    }
+
+    return [];
+  };
+
   render() {
-    const {
-      inputValue, selectList, searchResult, lastLoad,
-    } = this.state;
+    const { inputValue, selectList, loading, error } = this.state;
     const { multiple, showAvatar } = this.props;
+
+    const list = this.prepareList();
 
     return (
       <div className="dropdown">
@@ -146,12 +195,17 @@ class Dropdown extends React.Component {
             className="dropdown__input"
           />
         </div>
-        <UsersList
-          showAvatar={showAvatar}
-          onClick={this.onSelected}
-          search={searchResult.length ? searchResult.slice(0, lastLoad) : []}
-          inputValue={inputValue}
-        />
+
+        {error ? (
+          <p>Loading error. Try to reload page</p>
+        ) : (
+          <UsersList
+            list={list}
+            loading={loading}
+            showAvatar={showAvatar}
+            onClick={this.onSelected}
+          />
+        )}
       </div>
     );
   }
