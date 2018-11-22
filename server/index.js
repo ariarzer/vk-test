@@ -12,21 +12,37 @@ const app = express();
 
 app.use(express.static('static'));
 
-app.get('/api/v0/search', (req, res) => {
+const sleep = time => new Promise(r => setTimeout(r, time * 1000));
+
+app.get('/api/v0/search', async (req, res) => {
+  // await sleep(1.5);
+
   const { value } = req.query;
   res.send(tree.find(value, usersData));
 });
 
-app.get('/api/v0/users', (req, res) => {
+app.get('/api/v0/users', async (req, res) => {
+  await sleep(1.5);
+
+  let items;
   const { ids, start, count } = req.query;
+
   if (ids) {
-    res.send(JSON.parse(ids).reduce((acc, cur) => ({ ...acc, [cur]: usersData[cur] }), {}));
+    items = JSON.parse(ids).reduce((acc, cur) => ({ ...acc, [cur]: usersData[cur] }), {});
   }
+
   if (start && count) {
-    res.send(Object.keys(usersData)
+    items = Object.keys(usersData)
       .slice(+start, +start + +count)
-      .reduce((acc, cur) => ({ ...acc, [cur]: usersData[cur] }), {}));
+      .reduce((acc, cur) => ({ ...acc, [cur]: usersData[cur] }), {});
   }
+
+  res.send({
+    items,
+    meta: {
+      totalCount: Object.keys(usersData).length,
+    },
+  });
 });
 
 app.listen(process.env.PORT || 8080, (error) => {
