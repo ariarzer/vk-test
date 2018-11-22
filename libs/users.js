@@ -3,7 +3,7 @@ class Users {
     this.users = users;
   }
 
-  get(Key) {
+  getByField(Key) {
     const result = {};
     Object.keys(this.users).forEach((key) => {
       if (!this.users[key][Key]) {

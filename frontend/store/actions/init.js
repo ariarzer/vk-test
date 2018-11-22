@@ -12,6 +12,5 @@ export default function init(count, dispatch) {
         users: result,
         conversation: Object.keys(result),
       });
-    })
-    .catch(error => (error));
+    });
 }

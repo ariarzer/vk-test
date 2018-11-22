@@ -3,8 +3,8 @@ const users = require('../testData/users');
 const Users = require('../../users');
 const FindTree = require('../../find-tree.js');
 
-const names = new Users(users).get('personalName');
-const surnames = new Users(users).get('familyName');
+const names = new Users(users).getByField('personalName');
+const surnames = new Users(users).getByField('familyName');
 
 const tree = new FindTree(surnames, new FindTree(names).tree);
 

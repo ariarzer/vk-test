@@ -6,7 +6,7 @@ const FindTree = require('../libs/find-tree');
 const usersData = require('../data/users.json');
 
 const users = new User(usersData);
-const tree = new FindTree(users.get('personalName'), new FindTree(users.get('familyName')).tree);
+const tree = new FindTree(users.getByField('personalName'), new FindTree(users.getByField('familyName')).tree);
 
 const app = express();
 

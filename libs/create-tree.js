@@ -1,7 +1,7 @@
 const FindTree = require('./find-tree');
 
 function createTree(users) {
-  return new FindTree(users.get('personalName'), new FindTree(users.get('familyName')).tree);
+  return new FindTree(users.getByField('personalName'), new FindTree(users.getByField('familyName')).tree);
 }
 
-module.exports(createTree);
+module.exports = createTree;
