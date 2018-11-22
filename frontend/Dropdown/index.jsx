@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import UsersList from './UsersList.jsx';
 import SelectList from './SelectList.jsx';
 
+import style from './dropdown.css';
+
 import init from '../store/actions/init';
 import update from '../store/actions/update-users';
 

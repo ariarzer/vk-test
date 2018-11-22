@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import UsersListItem from './UsersListItem.jsx';
 
+import style from './search-list.css';
+
 class UsersList extends React.Component {
   constructor(props) {
     super(props);

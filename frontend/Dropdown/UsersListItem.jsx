@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createIcon } from '@download/blockies';
 
+import style from './search-list.css';
+
 class UsersListItem extends React.Component {
   constructor(props) {
     super(props);

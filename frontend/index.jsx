@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store/store.js';
 
+import style from './style.css';
+
 import Dropdown from './Dropdown/index.jsx';
 
 
