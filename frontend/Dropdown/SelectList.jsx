@@ -14,9 +14,9 @@ function SelectList(props) {
       <div className="dropdown__select-list select-list">
         {(selectList).map(key => (
           <div key={key} className="select-list__item">
-            {users[key].personalName}
+            {users.items[key].personalName}
             {' '}
-            {users[key].familyName}
+            {users.items[key].familyName}
             <button type="button" onClick={onClickRemove} id={key} className="select-list__remove-button" />
           </div>
         ))}

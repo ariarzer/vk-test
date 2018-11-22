@@ -24,7 +24,7 @@ function UsersList(props) {
         <p>Ничего не найдено :(</p>
       ) : (
         <InfiniteLoader
-          isRowLoaded={({ index }) => !!users[list[index]]}
+          isRowLoaded={({ index }) => !!(users.items[list[index]])}
           loadMoreRows={loadMore}
           rowCount={totalCount}
         >
@@ -45,7 +45,7 @@ function UsersList(props) {
                 >
                   <UsersListItem
                     showAvatar={showAvatar}
-                    item={users[list[index]]}
+                    item={users.items[list[index]]}
                   />
                 </div>
               )}

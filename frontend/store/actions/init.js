@@ -1,16 +1,16 @@
 const createTree = require('../../../libs/create-tree');
 const User = require('../../../libs/users');
+import api from '../../libs/api';
 
 export default function init(count, dispatch) {
-  return fetch(`/api/v0/users?start=${0}&count=${count}`, { cache: 'no-cache' })
-    .then(result => result.json())
+  return api('users', { start: 0, count })
     .then((result) => {
-      const tree = createTree(new User(result));
+      const tree = createTree(new User(result.items));
       dispatch({
         type: 'INIT',
         tree,
         users: result,
-        conversation: Object.keys(result),
+        conversation: Object.keys(result.items),
       });
     });
 }
