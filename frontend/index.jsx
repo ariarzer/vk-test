@@ -12,6 +12,10 @@ ReactDOM.render(
     <div className="container">
       <Dropdown
         multiple
+        showAvatar
+      />
+      <Dropdown
+        multiple={false}
         showAvatar={false}
       />
     </div>

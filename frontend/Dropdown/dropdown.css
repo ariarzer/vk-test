@@ -29,6 +29,8 @@
 }
 
 .dropdown__search-list {
+  margin-bottom: -220px;
+
   width: 100%;
   max-width: 100%;
   max-height: 220px;

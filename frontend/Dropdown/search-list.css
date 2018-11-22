@@ -1,5 +1,6 @@
-
 .search-item {
+  background: #fff;
+
   width: 100%;
   max-width: 100%;
 
@@ -14,6 +15,7 @@
 
 .search-item__avatar {
   margin-right: 10px;
+  width: 33px;
 }
 
 .search-item__avatar img,

@@ -42,6 +42,7 @@
 
   background-color: inherit;
   background-size: cover;
+  background-repeat: no-repeat;
   border: none;
 }
 
@@ -51,6 +52,7 @@
 
 .select-list__remove-button {
   background-image: url("./img/icon_remove.svg");
+  -moz-background-size: 90%;
 }
 
 .select-list__add-button {
