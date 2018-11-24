@@ -12,7 +12,7 @@ const app = express();
 
 app.use(express.static('static'));
 
-const sleep = time => new Promise(r => setTimeout(r, time * 1000));
+// const sleep = time => new Promise(r => setTimeout(r, time * 1000));
 
 app.get('/api/v0/search', async (req, res) => {
   // await sleep(1.5);
